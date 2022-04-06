@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class RespawnPlayer : MonoBehaviour
 {
+    GameObject respawn;
     // Start is called before the first frame update
     void Start()
     {
-        
+        respawn = GameObject.FindGameObjectWithTag("Respawn");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        GameObject bottom = GameObject.FindGameObjectWithTag("Bottom");
-        float bot_pos = bottom.transform.position.y;
-
-        GameObject respawn = GameObject.FindGameObjectWithTag("Respawn");
-        Vector3 resp_pos = new Vector3 (respawn.transform.position.x, respawn.transform.position.y, 0);
-
-        if(transform.position.y<bot_pos)
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.CompareTag("Player"))
         {
-            transform.position = resp_pos;
+            other.transform.position = respawn.transform.position;
+            GetComponent<HurtPlayer>().dealOneDmg();
         }
     }
 }
