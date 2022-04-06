@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd7f695010288c459dd12c6210bdf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainScene: {fileID: 102900000, guid: 29d3d673b05d08d49bf4dd96e3e9dca9, type: 3}
   gameScene: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
-  optionsScene: {fileID: 0}
+  optionsScene: {fileID: 102900000, guid: f4784c8832234b84f822d9964ced6dd2, type: 3}

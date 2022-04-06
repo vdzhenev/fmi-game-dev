@@ -20,7 +20,8 @@ public class GetKey : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            print("Player got Key");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<PlayerStats>().addKey();
             Destroy(gameObject);
         }
     }
