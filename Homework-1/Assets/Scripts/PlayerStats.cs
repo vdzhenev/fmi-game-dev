@@ -21,17 +21,21 @@ public class PlayerStats : MonoBehaviour
     public Sprite fullKey;
     public Sprite emptyKey;
 
+
+    public Animator animator;
     GameObject respawn;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         currHP = maxHP;
         respawn = GameObject.FindGameObjectWithTag("Respawn");
     }
 
     public void dealDamage(int amount)
-    {        
+    {   
+        animator.SetTrigger("Hurt");     
         currHP -= amount;
         print("Player has taken" + amount + " damage.");
         heartsHUD[currHP].sprite=emptyHeart;
@@ -53,4 +57,5 @@ public class PlayerStats : MonoBehaviour
             keys += 1;
         }
     }
+
 }

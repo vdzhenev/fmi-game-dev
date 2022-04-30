@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Vector2 speed = new Vector2 (30,30);
+    public Vector2 speed = new Vector2 (0,0);
+    public float fallMult = 2.5f;
+    public Animator animator;
+    float fastFall;
     SpriteRenderer obj_SpriteRenderer;
+    Rigidbody2D rb;
+    
     // Start is called before the first frame update
     void Start()
     {
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        fastFall = Physics2D.gravity.y * (fallMult-1);
+        rb = GetComponent<Rigidbody2D>();
         GameObject respawn = GameObject.FindGameObjectWithTag("Respawn");
         Vector3 resp_pos = new Vector3 (respawn.transform.position.x, respawn.transform.position.y, 0);
         transform.position = resp_pos;
@@ -20,11 +26,10 @@ public class PlayerMovement : MonoBehaviour
     {
 
         float inputX = Input.GetAxis("Horizontal");
-        Vector3 movement = new Vector3(speed.x*inputX, 0, 0);
-        movement.x = speed.x*inputX;
 
-        movement*=Time.deltaTime;
-        
+        Vector3 movement = new Vector3(speed.x*inputX, 0, 0);
+        animator.SetFloat("Horiz Speed", Mathf.Abs(movement.x));
+        animator.SetFloat("Vert Speed", Mathf.Abs(rb.velocity.y));
         //Flips sprite based on movement direction 
         obj_SpriteRenderer = GetComponent<SpriteRenderer>();
         if (inputX > 0f)
@@ -37,12 +42,20 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //Press Space to Jump 
-        if (isOnGround()&&Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)&&isOnGround())
         {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0,speed.y), ForceMode2D.Impulse);
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up*speed.y, ForceMode2D.Impulse);
         }
 
-        transform.Translate(movement);
+        if(rb.velocity.y<0 && rb.velocity.y >-10)
+        {
+            rb.velocity += Vector2.up * (fastFall * Time.deltaTime);
+        }
+        
+        if (inputX != 0f)
+        {
+            rb.velocity = new Vector2(movement.x, rb.velocity.y);
+        }
         
     }
 
