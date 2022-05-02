@@ -15,12 +15,14 @@ public class CharacterStat : MonoBehaviour
     public int initiative = 0;
 
     public Stat AC, STR, DEX, WIS;
-    public Ability ab1, ab2, ab3, ab4;
+    public List<Ability> abilities;
 
     
     public Transform myTarget {get; set;}
 
-    protected virtual void Awake() {
+    protected virtual void Awake() 
+    {
+        abilities = new List<Ability>();
         currHP = maxHP;
         refreshActions();
     }
@@ -29,7 +31,7 @@ public class CharacterStat : MonoBehaviour
     {
         int finDMG = damage-(Mathf.FloorToInt((AC.GetValue()/10f)*damage));
         currHP -= finDMG;
-        Debug.Log(name + "took " + finDMG + "damage\nCurr HP " + currHP);
+        Debug.Log(name + "took " + finDMG + " damage\nCurr HP " + currHP);
         if(currHP<=0)
         {
             Die();
@@ -39,6 +41,18 @@ public class CharacterStat : MonoBehaviour
     public void Die()
     {
         Debug.Log("character died");
+    }
+
+    public void heal(int amount)
+    {
+        if(!isDead())
+        {
+            currHP+=amount;
+            if(currHP>maxHP)
+            {
+                currHP = maxHP;
+            }
+        }
     }
 
     public void rollInitiative()
@@ -75,4 +89,14 @@ public class CharacterStat : MonoBehaviour
             Debug.Log("No actions left!");
         }
     }
+
+    public void useAbility(int n, Transform TARGET)
+    {
+        abilities[n].Use(TARGET);
+    }
+
+    public bool isDead()
+    {
+        return currHP <= 0;
+    } 
 }

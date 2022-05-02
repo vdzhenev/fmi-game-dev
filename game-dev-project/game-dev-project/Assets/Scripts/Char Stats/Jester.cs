@@ -7,13 +7,32 @@ public class Jester : CharacterStat
     protected override void Awake() 
     {
         base.Awake();
-        ab1 = new Ability("Firebolt", Ability.Target.SingleEnemy, 10+(WIS.GetValue()*2), "Deals damage to a single enemy");
-        ab2 = new Ability("Wall of Fire", Ability.Target.EnemyFrontCol, 5+(WIS.GetValue()/2), "Deals damage to all enemies in the front column");
-        ab3 = new Ability("Slow", Ability.Target.SingleEnemy, WIS.GetValue(), "Slows down an enemy making them more likely to miss.");
-        ab4 = new Ability("Haste", Ability.Target.SingleAlly, 1, "Ally can take two actions on it's next turn.");
+        abilities.Add(new Ability("Cure Wounds",        10+(WIS.GetValue()),            -1,     false,  "Heals an ally.",                           CureWounds));
+        abilities.Add(new Ability("Prayer of Healing",  5+(WIS.GetValue()/2),            2,     false,  "Heals all allies.",                        PrayerOfHealing));
+        abilities.Add(new Ability("Spiritual Weapon",   10+(int)(WIS.GetValue()*1.8f),  -1,     true,   "Deals damage to an enemy.",                SpiritualWeapon));
+        abilities.Add(new Ability("Spirit Guardians",   WIS.GetValue(),                  1,     false,  "Enemies attacking you will take damage.",  SpiritGuardians));
     }
 
-    private void Start() {
-        
+    private void CureWounds(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.heal(val);
+    }
+
+    private void PrayerOfHealing(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.heal(val);
+    }
+
+    private void SpiritualWeapon(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
+    }
+
+    private void SpiritGuardians(Transform target, int val)
+    {
+
     }
 }

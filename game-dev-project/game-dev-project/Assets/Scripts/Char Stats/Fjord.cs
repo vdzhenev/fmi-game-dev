@@ -7,13 +7,30 @@ public class Fjord : CharacterStat
     protected override void Awake() 
     {
         base.Awake();
-        ab1 = new Ability("Firebolt", Ability.Target.SingleEnemy, 10+(WIS.GetValue()*2), "Deals damage to a single enemy");
-        ab2 = new Ability("Wall of Fire", Ability.Target.EnemyFrontCol, 5+(WIS.GetValue()/2), "Deals damage to all enemies in the front column");
-        ab3 = new Ability("Slow", Ability.Target.SingleEnemy, WIS.GetValue(), "Slows down an enemy making them more likely to miss.");
-        ab4 = new Ability("Haste", Ability.Target.SingleAlly, 1, "Ally can take two actions on it's next turn.");
+        abilities.Add(new Ability("Falchion",           10+(STR.GetValue()),            -1,     false,  "Deals damage to an enemy.",                                                    Falchion));
+        abilities.Add(new Ability("Hex",                1,                               2,     false,  "Next attack against an enemy will deal more damage. Enemy is weaker.",         Hex));
+        abilities.Add(new Ability("Armor of Agathys",   WIS.GetValue(),                 -1,     false,   "Next attack against you will deal less damage. Attacker will take damage.",   ArmorOfAgathys));
+        abilities.Add(new Ability("Hunger of Hadar",    WIS.GetValue()*2,                  1,    true,  "Deals damage to enemies in the back row.",                                     HungerOfHadar));
     }
 
-    private void Start() {
+    private void Falchion(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
+    }
+
+    private void Hex(Transform target, int val)
+    {
+        
+    }
+
+    private void ArmorOfAgathys(Transform target, int val)
+    {
+        
+    }
+
+    private void HungerOfHadar(Transform target, int val)
+    {
         
     }
 }

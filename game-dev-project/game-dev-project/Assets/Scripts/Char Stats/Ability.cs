@@ -1,28 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ability 
 {
-    public enum Target
-    {
-        Self,
-        SingleEnemy,
-        SingleAlly,
-        EnemyFrontCol,
-        EnemyBackCol
-    }
-
-    private Target target = Target.SingleEnemy;
     private int Value = 0;
+    private int BaseUses = -1;
+    private int Uses {set; get;}
+    private bool special = false;
+    private Action<Transform, int> onUse;
 
     [SerializeField]
     private string name = "sample name";
     private string description = "sample description";
 
-    public Target getTarget()
+    private void Awake() 
     {
-        return target;
+        Uses = BaseUses;
     }
 
     public string getDescription()
@@ -35,17 +30,38 @@ public class Ability
         return Value;
     }
 
-    public Ability(string n, Target t, int val, string desc)
+    public void refreshUses()
     {
-        target = t;
-        Value = val;
+        Uses = BaseUses;
+    }
+
+    public Ability(string n, int val, int u, bool s, string desc, Action<Transform, int> _onUse)
+    {
         name = string.Copy(n);
+        Value = val;
+        Uses = u;
+        special = s;
         description = string.Copy(desc);
+        onUse = _onUse;
     }
 
     public void readAb()
     {
-        Debug.Log(name + "\nTarget " + target + "\nValue " + Value + "\n Descr " + description);
+        Debug.Log(name + "\nValue " + Value + "\n Descr " + description);
+    }
+
+    public void Use(Transform TARGET)
+    {
+        if(Uses==0)
+        {
+            Debug.Log("No more uses left!");
+            return;
+        }
+        else if(Uses != -1)
+        {
+            --Uses;
+        }
+        onUse(TARGET, Value);
     }
 
 }

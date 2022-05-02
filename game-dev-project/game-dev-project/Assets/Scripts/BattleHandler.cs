@@ -8,6 +8,7 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private Transform[] pfPlayerCharacters;
     [SerializeField] private Transform[] pfEnemyCharacters;
     [SerializeField] private GameObject AbilityLayout;
+    [SerializeField] private GameObject TrackerUI;
     
     private enum State 
     {
@@ -24,10 +25,12 @@ public class BattleHandler : MonoBehaviour
     private List<Transform> initiativeCount;
     private List<Transform> playerTeam;
     private List<Transform> enemyTeam;
+
     private int currTurn = -1;
     private Transform currentPlayer;
 
     private State state;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,13 +53,13 @@ public class BattleHandler : MonoBehaviour
         }
 
         initiativeCount.Sort(SortByInitiative);
-        // currentPlayer = initiativeCount[currTurn];
-        // Debug.Log(currentPlayer.name + "\'s turn");
-        
 
-        yield return new WaitForSeconds(2f);
+        TrackerUI.GetComponent<UpdateTracker>().Setup(initiativeCount, TOTAL_SIZE);
 
         ChooseNextCharacter();
+
+        yield return new WaitForSeconds(2f);
+        
     }
 
     // Places characters and enemies on the field
@@ -80,6 +83,7 @@ public class BattleHandler : MonoBehaviour
             position = new Vector3(1+(place%2), (place < 2 ? 1:(place <4 ? 0 : -1) ), -1);
             Transform curr = Instantiate(pfEnemyCharacters[place], position, Quaternion.identity);
             curr.GetComponent<CharacterStat>().startBattle();
+            curr.GetComponent<CharacterStat>().ID = MAX_PLAYER_TEAM_SIZE + place;
             initiativeCount.Add(curr);
             enemyTeam.Add(curr);
         }
@@ -88,17 +92,29 @@ public class BattleHandler : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(1f);
-        currentPlayer.GetComponent<SampleEnemy>().Attack(playerTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+        if(state==State.Busy)
+        {     
+            yield return new WaitForSeconds(2f);
+            int targetNum = Random.Range(0, MAX_PLAYER_TEAM_SIZE-1);
+            Transform target = playerTeam[targetNum];
+            while(target.GetComponent<CharacterStat>().isDead() && !checkBattleLost())
+            {
+                Debug.Log(target.name + " is dead. Choosing next...");
+                ++targetNum;
+                target = playerTeam[targetNum%MAX_PLAYER_TEAM_SIZE];
+                Debug.Log(targetNum);
+            }
+            currentPlayer.GetComponent<SampleEnemy>().useAbility(0, target);
 
-        yield return new WaitForSeconds(1f);
-        ChooseNextCharacter();
+            //yield return new WaitForSeconds(1f);
+            ChooseNextCharacter();
+        }
     }
 
     void PlayerTurn()
     {
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
-        if(CS.currHP<=0 || CS.numOfActions <= 0)
+        if(CS.isDead() || CS.numOfActions <= 0)
         {
             state = State.Busy;
             CS.refreshActions();
@@ -107,75 +123,87 @@ public class BattleHandler : MonoBehaviour
 
     }
 
-    public void OnAbility1()
+    public void OnAbility(int N)
     {
+        if(state != State.WaitingForPlayer)
+            return;
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
         CS.takeAction();
-        Debug.Log("Used ab 1");
+        CS.useAbility(N, enemyTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+        Debug.Log("Used ab " + N);
         PlayerTurn();
-    }
-
-    public void OnAbility2()
-    {
-        CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
-        CS.takeAction();
-        Debug.Log("Used ab 2");
-        PlayerTurn();
-    }
-
-    public void OnAbility3()
-    {
-        CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
-        CS.takeAction();
-        Debug.Log("Used ab 3");
-        PlayerTurn();
-    }
-
-    public void OnAbility4()
-    {
-        CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
-        CS.takeAction();
-        Debug.Log("Used ab 4");
-        PlayerTurn();
-    }
-
-    
-
-    private void Update() 
-    {
-        // if(currentPlayer.CompareTag("Player"))
-        // {
-        //     state = State.WaitingForPlayer;
-        // }
-        // if(Input.GetKey(KeyCode.Q) && state == State.WaitingForPlayer)
-        // {
-        //     state = State.Busy;
-        //     Debug.Log(currentPlayer.name + " used ability 1");
-        //     ChooseNextCharacter();
-        // }
     }
 
     private void ChooseNextCharacter()
     {
-        ++currTurn;
-        currentPlayer = initiativeCount[currTurn%TOTAL_SIZE];
-        Debug.Log(currentPlayer.name + "\'s turn");
-        if(currentPlayer.GetComponent<CharacterStat>().currHP <= 0)
+        if(checkBattleLost())
         {
-            ChooseNextCharacter();
+            state = State.LOST;
+            loseBattle();
         }
-        if(currentPlayer.CompareTag("Player"))
+        else if(checkBattleWon())
         {
-            state = State.WaitingForPlayer;
-            AbilityLayout.GetComponent<UpdateUI>().updateAbilities(currentPlayer.GetComponent<CharacterStat>().ID);
-            PlayerTurn();
+            state = State.WON;
+            winBattle();
         }
         else
         {
-            state = State.Busy;
-            StartCoroutine(EnemyTurn());
+            ++currTurn;
+            currentPlayer = initiativeCount[currTurn%TOTAL_SIZE];
+            TrackerUI.GetComponent<UpdateTracker>().UpdateUI();
+            //Debug.Log(currentPlayer.name + "\'s turn");
+            if(currentPlayer.GetComponent<CharacterStat>().currHP <= 0)
+            {
+                ChooseNextCharacter();
+            }
+            if(currentPlayer.CompareTag("Player"))
+            {
+                state = State.WaitingForPlayer;
+                AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer.GetComponent<CharacterStat>().ID);
+                PlayerTurn();
+            }
+            else
+            {
+                state = State.Busy;
+                StartCoroutine(EnemyTurn());
+            }
         }
     }
+
+    private bool checkBattleLost()
+    {
+        for(int i = 0; i< MAX_PLAYER_TEAM_SIZE; ++i)
+        {
+            if(!playerTeam[i].GetComponent<CharacterStat>().isDead())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool checkBattleWon()
+    {
+        for(int i = 0; i< MAX_ENEMY_TEAM_SIZE; ++i)
+        {
+            if(!enemyTeam[i].GetComponent<CharacterStat>().isDead())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void loseBattle()
+    {
+        Debug.Log("You lost the battle :(");
+    }
+    
+    private void winBattle()
+    {
+        Debug.Log("You won the battle :)");
+    }
+
 
     static int SortByInitiative(Transform c1, Transform c2)
     {

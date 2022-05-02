@@ -7,11 +7,12 @@ public class SampleEnemy : CharacterStat
     protected override void Awake() 
     {
         base.Awake();
-        ab1 = new Ability("Attack", Ability.Target.SingleAlly, 10 + STR.GetValue(), "Simple attack");
+        abilities.Add(new Ability("Attack", 10 + STR.GetValue(), -1, false, "Simple attack", Attack));
     }
 
-    public void Attack(Transform Target)
+    public void Attack(Transform Target, int val)
     {
-        Target.GetComponent<CharacterStat>().takeDamage(ab1.getVal());
+        CharacterStat CS = Target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
     }
 }

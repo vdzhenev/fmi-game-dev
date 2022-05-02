@@ -4,16 +4,35 @@ using UnityEngine;
 
 public class Nott : CharacterStat
 {
-    protected override void Awake() 
+        protected override void Awake() 
     {
         base.Awake();
-        ab1 = new Ability("Firebolt", Ability.Target.SingleEnemy, 10+(WIS.GetValue()*2), "Deals damage to a single enemy");
-        ab2 = new Ability("Wall of Fire", Ability.Target.EnemyFrontCol, 5+(WIS.GetValue()/2), "Deals damage to all enemies in the front column");
-        ab3 = new Ability("Slow", Ability.Target.SingleEnemy, WIS.GetValue(), "Slows down an enemy making them more likely to miss.");
-        ab4 = new Ability("Haste", Ability.Target.SingleAlly, 1, "Ally can take two actions on it's next turn.");
+        abilities.Add(new Ability("Crossbow",           10+(DEX.GetValue()*2),  -1,     true,  "Deals damage to a single enemy",                    Crossbow));
+        abilities.Add(new Ability("Steady Aim",         0,                       2,     false,  "Next attack will deal double damage!",             SteadyAim));
+        abilities.Add(new Ability("Hide",               0,                      -1,     false,  "Enemies can\'t target you until your next turn",   Hide));
+        abilities.Add(new Ability("Hideous Laughter",   1,                       2,     false,  "Enemy will have one less action next turn.",       Laughter));
     }
 
-    private void Start() {
-        
+    private void Crossbow(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
+    }
+
+    private void SteadyAim(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
+    }
+
+    private void Hide(Transform target, int val)
+    {
+
+    }
+
+    private void Laughter(Transform target, int val)
+    {
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeAction();
     }
 }
