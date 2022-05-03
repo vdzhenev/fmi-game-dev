@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b11a7e797d7d484fa60db59fb6a226c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: -1
   maxHP: 72
   baseNumOfActions: 1
   initiative: 0
@@ -108,6 +109,11 @@ MonoBehaviour:
     BaseValue: 2
   WIS:
     BaseValue: 4
+  abilities:
+  - {fileID: 11400000, guid: 06439163d2cc3b34896919ac3da67225, type: 2}
+  - {fileID: 11400000, guid: 92e47f431922c794e82faea3a0edc724, type: 2}
+  - {fileID: 11400000, guid: daf8f5abf311d4d48a3494bb5f15f4f1, type: 2}
+  - {fileID: 11400000, guid: c5ae24de691f0c44999a8b04e2810f6f, type: 2}
 --- !u!114 &4490909599241311331
 MonoBehaviour:
   m_ObjectHideFlags: 0

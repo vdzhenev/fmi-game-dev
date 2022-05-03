@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5422e0d2131624dbba873e31324d8d, type: 3}
+  m_Name: JesterAbility0
+  m_EditorClassIdentifier: 
+  image: {fileID: 8414603503610069383, guid: 60024f35969bc3949843d84d09263e8c, type: 3}
+  abilityName: Cure Wounds
+  description: Heals an ally.
+  Value: 0
+  BaseUses: -1

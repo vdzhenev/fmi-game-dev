@@ -159,7 +159,7 @@ public class BattleHandler : MonoBehaviour
             if(currentPlayer.CompareTag("Player"))
             {
                 state = State.WaitingForPlayer;
-                AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer.GetComponent<CharacterStat>().ID);
+                AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer);
                 PlayerTurn();
             }
             else

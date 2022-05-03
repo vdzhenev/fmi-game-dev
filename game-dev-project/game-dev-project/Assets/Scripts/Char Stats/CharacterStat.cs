@@ -15,16 +15,24 @@ public class CharacterStat : MonoBehaviour
     public int initiative = 0;
 
     public Stat AC, STR, DEX, WIS;
-    public List<Ability> abilities;
+    [SerializeField] public List<Ability> abilities;
 
     
     public Transform myTarget {get; set;}
 
     protected virtual void Awake() 
     {
-        abilities = new List<Ability>();
         currHP = maxHP;
         refreshActions();
+    }
+
+    public void printAbilities()
+    {
+        foreach(Ability a in abilities)
+        {
+            Debug.Log(a.getAbilityText());
+            Debug.Log(a.getVal());
+        }
     }
 
     public void takeDamage(int damage)
