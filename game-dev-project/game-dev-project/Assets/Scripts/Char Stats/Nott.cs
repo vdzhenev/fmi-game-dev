@@ -8,17 +8,27 @@ public class Nott : CharacterStat
     {
         base.Awake();
 
+        int dex = DEX.GetValue();
+        
         abilities[0].setAction(Crossbow);
-        abilities[0].setValue(10+(DEX.GetValue()*2));
+        abilities[0].setValue(10+dex*2);
+        abilities[0].setTarget(Ability.Target.SingleEnemy);
+        abilities[0].setDescription($"Deals <color=#0C9C19>{10+dex*2}</color> damage to a single enemy.");
 
         abilities[1].setAction(SteadyAim);
         abilities[1].setValue(0);
+        abilities[1].setTarget(Ability.Target.Self);
+        abilities[1].setDescription($"Your next attack will deal double damage!");
 
         abilities[2].setAction(Hide);
         abilities[2].setValue(0);
+        abilities[2].setTarget(Ability.Target.Self);
+        abilities[2].setDescription($"Enemies can\'t target you until your next turn.");
 
         abilities[3].setAction(Laughter);
         abilities[3].setValue(1);
+        abilities[3].setTarget(Ability.Target.SingleEnemy);
+        abilities[3].setDescription($"Enemy will have one less action next turn.");
 
         //abilities.Add(new Ability("Crossbow",           10+(DEX.GetValue()*2),  -1,     true,  "Deals damage to a single enemy",                    Crossbow));
         //abilities.Add(new Ability("Steady Aim",         0,                       2,     false,  "Next attack will deal double damage!",             SteadyAim));

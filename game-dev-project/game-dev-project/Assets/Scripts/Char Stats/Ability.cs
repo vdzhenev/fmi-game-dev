@@ -7,6 +7,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability")]
 public class Ability : ScriptableObject
 {
+    public enum Target
+    {
+        SingleEnemy,
+        Self,
+        SingleAlly,
+        AllAllies,
+        EnemyFront,
+        EnemyBack
+    }
 
     [SerializeField] private Sprite image;
 
@@ -16,16 +25,39 @@ public class Ability : ScriptableObject
     [SerializeField]
     private string description = "sample description";
 
+    private Target target = Target.SingleEnemy;
+
     [SerializeField] private int Value = 0;
     [SerializeField] private int BaseUses = -1;
     private int Uses {set; get;}
+
     private bool special = false;
 
     private Action<Transform, int> onUse;
 
+    private void Awake() 
+    {
+        Uses = BaseUses;
+    }
+
     public void setAction(Action<Transform, int> action)
     {
         onUse = action;
+    }
+
+    //public void setAction(Action<List<Transform>, int> action) 
+    //{
+    //    onUse = action;
+    //}
+
+    public void setTarget(Target t) 
+    {
+        target = t;
+    }
+
+    public Target getTarget()
+    {
+        return target;
     }
 
     public void setValue(int val) 
@@ -33,9 +65,9 @@ public class Ability : ScriptableObject
         Value = val;
     }
 
-    private void Awake() 
+    public void setDescription(string d) 
     {
-        Uses = BaseUses;
+        description = string.Copy(d);
     }
 
     public string getDescription()
@@ -46,6 +78,11 @@ public class Ability : ScriptableObject
     public int getVal()
     {
         return Value;
+    }
+
+    public int getUses()
+    {
+        return Uses;
     }
 
     public void refreshUses()
@@ -70,7 +107,12 @@ public class Ability : ScriptableObject
 
     public string getAbilityText()
     {
-        return(abilityName + "\n" + description);
+        string toReturn = $"<color=#000000> {abilityName}\n{description}</color>";
+        if(Uses!=-1)
+        {
+            toReturn+=$"<color=#000000>\nUses: {Uses}</color>";
+        }
+        return(toReturn);
     }
 
     public void Use(Transform TARGET)
@@ -85,6 +127,23 @@ public class Ability : ScriptableObject
             --Uses;
         }
         onUse(TARGET, Value);
+    }
+
+    public void Use(List<Transform> Targets)
+    {
+        if(Uses==0)
+        {
+            Debug.Log("No more uses left!");
+            return;
+        }
+        else if(Uses != -1)
+        {
+            --Uses;
+        }
+        foreach(Transform t in Targets)
+        {
+            onUse(t, Value);
+        }
     }
 
 }

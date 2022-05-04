@@ -72,6 +72,7 @@ public class BattleHandler : MonoBehaviour
             {
                 position = new Vector3(-2+(place%2),(place<2?1:-1), -1);
                 Transform curr = Instantiate(pfPlayerCharacters[place], position, Quaternion.identity);
+                curr.name = pfPlayerCharacters[place].name;
                 curr.GetComponent<CharacterStat>().startBattle();
                 curr.GetComponent<CharacterStat>().ID = place;
                 initiativeCount.Add(curr);
@@ -82,6 +83,7 @@ public class BattleHandler : MonoBehaviour
         {
             position = new Vector3(1+(place%2), (place < 2 ? 1:(place <4 ? 0 : -1) ), -1);
             Transform curr = Instantiate(pfEnemyCharacters[place], position, Quaternion.identity);
+            curr.name = "Enemy" + place;
             curr.GetComponent<CharacterStat>().startBattle();
             curr.GetComponent<CharacterStat>().ID = MAX_PLAYER_TEAM_SIZE + place;
             initiativeCount.Add(curr);
@@ -104,7 +106,7 @@ public class BattleHandler : MonoBehaviour
                 target = playerTeam[targetNum%MAX_PLAYER_TEAM_SIZE];
                 Debug.Log(targetNum);
             }
-            currentPlayer.GetComponent<SampleEnemy>().useAbility(0, target);
+            currentPlayer.GetComponent<CharacterStat>().useAbility(0, target);
 
             //yield return new WaitForSeconds(1f);
             ChooseNextCharacter();
@@ -128,8 +130,45 @@ public class BattleHandler : MonoBehaviour
         if(state != State.WaitingForPlayer)
             return;
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
-        CS.takeAction();
-        CS.useAbility(N, enemyTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+        if(CS.abilities[N].getUses()==0)
+            return;
+        Ability.Target allowed = CS.abilities[N].getTarget();
+
+        switch(allowed)
+        {
+            case Ability.Target.Self:
+                CS.useAbility(N, currentPlayer);
+                break;
+            case Ability.Target.SingleEnemy:
+                CS.useAbility(N, enemyTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+                break;
+            case Ability.Target.EnemyBack:
+                List<Transform> backCol = new List<Transform>();
+                for(int i = 1; i<MAX_ENEMY_TEAM_SIZE; i+=2)
+                {
+                    backCol.Add(enemyTeam[i]);
+                }
+                CS.useAbility(N, backCol);
+                break;
+            case Ability.Target.EnemyFront:
+                List<Transform> frontCol = new List<Transform>();
+                for(int i = 0; i<MAX_ENEMY_TEAM_SIZE; i+=2)
+                {
+                    frontCol.Add(enemyTeam[i]);
+                }
+                CS.useAbility(N, frontCol);
+                break;
+            case Ability.Target.SingleAlly:
+                CS.useAbility(N, playerTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+                break;
+            case Ability.Target.AllAllies:
+                CS.useAbility(N, playerTeam);
+                break;
+            default:
+                Debug.Log("Error while choosing target!");
+                break;
+        }
+        
         Debug.Log("Used ab " + N);
         PlayerTurn();
     }

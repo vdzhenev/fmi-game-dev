@@ -8,17 +8,28 @@ public class Jester : CharacterStat
     {
         base.Awake();
 
+        int str = STR.GetValue();
+        int wis = WIS.GetValue();
+
         abilities[0].setAction(CureWounds);
-        abilities[0].setValue(10+(WIS.GetValue()*2));
+        abilities[0].setValue(10+wis*2);
+        abilities[0].setTarget(Ability.Target.SingleAlly);
+        abilities[0].setDescription($"Heals an ally for <color=#6DA9DF>{10+wis*2}</color> HP.");
 
         abilities[1].setAction(PrayerOfHealing);
         abilities[1].setValue(5+(WIS.GetValue()/2));
+        abilities[1].setTarget(Ability.Target.AllAllies);
+        abilities[1].setDescription($"Heals all allies for <color=#6DA9DF>{5+wis/2}</color> HP.");
 
         abilities[2].setAction(SpiritualWeapon);
-        abilities[2].setValue(10+(int)(WIS.GetValue()*1.8f));
+        abilities[2].setValue(10+str);
+        abilities[2].setTarget(Ability.Target.SingleEnemy);
+        abilities[2].setDescription($"Deals <color=#B4323D>{10+str}</color> damage to a single enemy.");
 
         abilities[3].setAction(SpiritGuardians);
-        abilities[3].setValue(WIS.GetValue());
+        abilities[3].setValue(wis);
+        abilities[3].setTarget(Ability.Target.Self);
+        abilities[3].setDescription($"Enemies will take <color=#6DA9DF>{wis}</color> damage when attacking you.");
 
         //abilities.Add(new Ability("Cure Wounds",        10+(WIS.GetValue()),            -1,     false,  "Heals an ally.",                           CureWounds));
         //abilities.Add(new Ability("Prayer of Healing",  5+(WIS.GetValue()/2),            2,     false,  "Heals all allies.",                        PrayerOfHealing));

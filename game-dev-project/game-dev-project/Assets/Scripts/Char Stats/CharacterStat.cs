@@ -24,6 +24,10 @@ public class CharacterStat : MonoBehaviour
     {
         currHP = maxHP;
         refreshActions();
+        foreach(Ability a in abilities)
+        {
+            a.refreshUses();
+        }
     }
 
     public void printAbilities()
@@ -49,12 +53,14 @@ public class CharacterStat : MonoBehaviour
     public void Die()
     {
         Debug.Log("character died");
+        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public void heal(int amount)
     {
         if(!isDead())
         {
+            Debug.Log("character healed for " + amount);
             currHP+=amount;
             if(currHP>maxHP)
             {
@@ -101,6 +107,13 @@ public class CharacterStat : MonoBehaviour
     public void useAbility(int n, Transform TARGET)
     {
         abilities[n].Use(TARGET);
+        takeAction();
+    }
+
+    public void useAbility(int n, List<Transform> TARGET)
+    {
+        abilities[n].Use(TARGET);
+        takeAction();
     }
 
     public bool isDead()

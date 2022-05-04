@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CalebAbility0
   m_EditorClassIdentifier: 
   image: {fileID: -1127535487111617463, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
-  abilityName: Fireball
+  abilityName: Firebolt
   description: Deals damage to a single enemy
   Value: 24
   BaseUses: -1

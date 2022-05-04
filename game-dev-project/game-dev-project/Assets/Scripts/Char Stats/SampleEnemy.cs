@@ -7,7 +7,8 @@ public class SampleEnemy : CharacterStat
     protected override void Awake() 
     {
         base.Awake();
-        abilities.Add(new Ability("Attack", 10 + STR.GetValue(), -1, false, "Simple attack", Attack));
+        abilities[0].setAction(Attack);
+        abilities[0].setValue(10+STR.GetValue());
     }
 
     public void Attack(Transform Target, int val)

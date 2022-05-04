@@ -8,17 +8,27 @@ public class Caleb : CharacterStat
     {
         base.Awake();
 
+        int wis = WIS.GetValue();
         abilities[0].setAction(Firebolt);
-        abilities[0].setValue(10+(WIS.GetValue()*2));
+        abilities[0].setValue(10+(wis*2));
+        abilities[0].setTarget(Ability.Target.SingleEnemy);
+        abilities[0].setDescription($"Deals <color=#6DA9DF>{10+wis*2}</color> damage to a single enemy");
+
 
         abilities[1].setAction(WallOfFire);
-        abilities[1].setValue(5+(WIS.GetValue()/2));
+        abilities[1].setValue(5+(wis));
+        abilities[1].setTarget(Ability.Target.EnemyFront);
+        abilities[1].setDescription($"Deals <color=#6DA9DF>{5+wis/2}</color> damage to all enemies in the front column");
 
         abilities[2].setAction(Slow);
-        abilities[2].setValue(WIS.GetValue());
+        abilities[2].setValue(wis);
+        abilities[2].setTarget(Ability.Target.SingleEnemy);
+        abilities[2].setDescription($"Slows down an enemy making them more likely to miss their next attack.");
 
         abilities[3].setAction(Haste);
         abilities[3].setValue(1);
+        abilities[3].setTarget(Ability.Target.SingleAlly);
+        abilities[3].setDescription($"Ally can take an extra action on it\'s next turn");
 
         //              NAME                                VALUE           USES    SPECIAL             DESCRIPTION                                     ACTION
         //abilities.Add(new Ability("Firebolt",       10+(WIS.GetValue()*2),  -1,     false,  "Deals damage to a single enemy",                       Firebolt));
