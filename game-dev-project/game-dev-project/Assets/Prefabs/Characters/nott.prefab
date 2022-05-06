@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3657865456133150092}
   - component: {fileID: 3657865456133150130}
   - component: {fileID: 3657865456133150093}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: nott
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -114,6 +114,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e23d876e558fdf48b454bdf58c14253, type: 2}
   - {fileID: 11400000, guid: 61753f5071d84b3489745c372f38a226, type: 2}
   - {fileID: 11400000, guid: 07f16f6a9bed76942bb7a40e5e4e9be9, type: 2}
+  hpBar: {fileID: 1260925507129538297, guid: 28c826cd5cd5fa34f8be0875e82eacdb, type: 3}
 --- !u!61 &3657865456133150130
 BoxCollider2D:
   m_ObjectHideFlags: 0

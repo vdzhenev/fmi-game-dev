@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6713400172151641518}
   - component: {fileID: 1530775444}
   - component: {fileID: 1530775446}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
     BaseValue: 0
   abilities:
   - {fileID: 11400000, guid: 78b3207aceac299499fa3236c82cefd6, type: 2}
+  hpBar: {fileID: 1260925507129538297, guid: 28c826cd5cd5fa34f8be0875e82eacdb, type: 3}
 --- !u!61 &1530775444
 BoxCollider2D:
   m_ObjectHideFlags: 0

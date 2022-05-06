@@ -17,6 +17,8 @@ public class CharacterStat : MonoBehaviour
     public Stat AC, STR, DEX, WIS;
     [SerializeField] public List<Ability> abilities;
 
+    //public HpBar hpBar;
+
     
     public Transform myTarget {get; set;}
 
@@ -28,6 +30,8 @@ public class CharacterStat : MonoBehaviour
         {
             a.refreshUses();
         }
+        //Instantiate(hpBar, transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
+        //hpBar.SetMaxHealth(maxHP);
     }
 
     public void printAbilities()
@@ -43,11 +47,13 @@ public class CharacterStat : MonoBehaviour
     {
         int finDMG = damage-(Mathf.FloorToInt((AC.GetValue()/10f)*damage));
         currHP -= finDMG;
-        Debug.Log(name + "took " + finDMG + " damage\nCurr HP " + currHP);
+        Debug.Log(name + " took " + finDMG + " damage\nCurr HP " + currHP);
         if(currHP<=0)
         {
+            currHP = 0;
             Die();
         }
+        //hpBar.SetHealth(currHP);
     }
 
     public void Die()
@@ -67,6 +73,7 @@ public class CharacterStat : MonoBehaviour
                 currHP = maxHP;
             }
         }
+        //hpBar.SetHealth(currHP);
     }
 
     public void rollInitiative()

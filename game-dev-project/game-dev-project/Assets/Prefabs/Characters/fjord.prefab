@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4490909599241311330}
   - component: {fileID: 4490909599241311331}
   - component: {fileID: 4490909599241311328}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: fjord
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -114,6 +114,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92e47f431922c794e82faea3a0edc724, type: 2}
   - {fileID: 11400000, guid: daf8f5abf311d4d48a3494bb5f15f4f1, type: 2}
   - {fileID: 11400000, guid: c5ae24de691f0c44999a8b04e2810f6f, type: 2}
+  hpBar: {fileID: 1260925507129538297, guid: 28c826cd5cd5fa34f8be0875e82eacdb, type: 3}
 --- !u!114 &4490909599241311331
 MonoBehaviour:
   m_ObjectHideFlags: 0

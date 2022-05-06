@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4959423841443879454}
   - component: {fileID: 848917627059244414}
   - component: {fileID: 3127621712249198701}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: caleb
   m_TagString: Player
   m_Icon: {fileID: 0}

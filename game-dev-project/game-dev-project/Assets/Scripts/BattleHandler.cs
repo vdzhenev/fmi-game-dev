@@ -9,6 +9,7 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private Transform[] pfEnemyCharacters;
     [SerializeField] private GameObject AbilityLayout;
     [SerializeField] private GameObject TrackerUI;
+    [SerializeField] private GameObject CharacterStatDisplay;
     
     private enum State 
     {
@@ -28,17 +29,48 @@ public class BattleHandler : MonoBehaviour
 
     private int currTurn = -1;
     private Transform currentPlayer;
+    private Transform selected;
+    private Camera mainCam;
 
     private State state;
 
     // Start is called before the first frame update
     void Start()
     {
+        selected = null;
+        mainCam = Camera.main;
         initiativeCount = new List<Transform>();
         playerTeam = new List<Transform>();
         enemyTeam = new List<Transform>();
         state = State.Busy;
         StartCoroutine(SetupBattle());
+    }
+
+    private void Update() 
+    {
+        ClickTarget();
+    }
+
+    bool ClickTarget()
+    {
+        if(Input.GetMouseButton(0))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(mainCam.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,Mathf.Infinity, LayerMask.GetMask("Clickable"));
+            if(hit.collider != null)
+            {
+                if(selected) selected.GetComponent<SpriteRenderer>().color = Color.white;
+
+                selected = hit.transform;
+                selected.GetComponent<SpriteRenderer>().color = Color.gray;
+                CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(selected);
+                return true;
+            }
+            else
+            {
+                CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
+            }
+        }
+        return false;
     }
 
     IEnumerator SetupBattle()
@@ -133,14 +165,21 @@ public class BattleHandler : MonoBehaviour
         if(CS.abilities[N].getUses()==0)
             return;
         Ability.Target allowed = CS.abilities[N].getTarget();
-
         switch(allowed)
         {
             case Ability.Target.Self:
                 CS.useAbility(N, currentPlayer);
                 break;
             case Ability.Target.SingleEnemy:
-                CS.useAbility(N, enemyTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+                if(enemyTeam.Contains(selected))
+                {
+                    CS.useAbility(N, selected);
+                }
+                else
+                {
+                    Debug.Log("Incorrect Target.");
+                    return;
+                }
                 break;
             case Ability.Target.EnemyBack:
                 List<Transform> backCol = new List<Transform>();
@@ -159,7 +198,15 @@ public class BattleHandler : MonoBehaviour
                 CS.useAbility(N, frontCol);
                 break;
             case Ability.Target.SingleAlly:
-                CS.useAbility(N, playerTeam[Random.Range(0, MAX_PLAYER_TEAM_SIZE-1)]);
+                if(playerTeam.Contains(selected))
+                {
+                    CS.useAbility(N, selected);
+                }
+                else
+                {
+                    Debug.Log("Incorrect Target.");
+                    return;
+                }
                 break;
             case Ability.Target.AllAllies:
                 CS.useAbility(N, playerTeam);
@@ -169,9 +216,14 @@ public class BattleHandler : MonoBehaviour
                 break;
         }
         
-        Debug.Log("Used ab " + N);
+        //Debug.Log("Used ab " + N);
         PlayerTurn();
     }
+
+    //IEnumerator waitForTarget()
+    //{
+    //    yield return new WaitUntil(ClickTarget);
+    //}
 
     private void ChooseNextCharacter()
     {
@@ -191,18 +243,21 @@ public class BattleHandler : MonoBehaviour
             currentPlayer = initiativeCount[currTurn%TOTAL_SIZE];
             TrackerUI.GetComponent<UpdateTracker>().UpdateUI();
             //Debug.Log(currentPlayer.name + "\'s turn");
-            if(currentPlayer.GetComponent<CharacterStat>().currHP <= 0)
+            if(currentPlayer.GetComponent<CharacterStat>().isDead())
             {
                 ChooseNextCharacter();
             }
             if(currentPlayer.CompareTag("Player"))
             {
                 state = State.WaitingForPlayer;
+                AbilityLayout.SetActive(true);
                 AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer);
+                CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
                 PlayerTurn();
             }
             else
             {
+                AbilityLayout.SetActive(false);
                 state = State.Busy;
                 StartCoroutine(EnemyTurn());
             }
