@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterStat : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public class CharacterStat : MonoBehaviour
     public Stat AC, STR, DEX, WIS;
     [SerializeField] public List<Ability> abilities;
 
-    //public HpBar hpBar;
+    //First Icon is the Big one, second is the small one
+    public List<Sprite> Icons;
+
+    public HpBar hpBar;
 
     
     public Transform myTarget {get; set;}
@@ -30,8 +34,7 @@ public class CharacterStat : MonoBehaviour
         {
             a.refreshUses();
         }
-        //Instantiate(hpBar, transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
-        //hpBar.SetMaxHealth(maxHP);
+        hpBar.SetMaxHealth(maxHP);
     }
 
     public void printAbilities()
@@ -53,7 +56,7 @@ public class CharacterStat : MonoBehaviour
             currHP = 0;
             Die();
         }
-        //hpBar.SetHealth(currHP);
+        hpBar.SetHealth(currHP);
     }
 
     public void Die()
@@ -73,7 +76,7 @@ public class CharacterStat : MonoBehaviour
                 currHP = maxHP;
             }
         }
-        //hpBar.SetHealth(currHP);
+        hpBar.SetHealth(currHP);
     }
 
     public void rollInitiative()

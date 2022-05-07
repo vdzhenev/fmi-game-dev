@@ -250,14 +250,14 @@ public class BattleHandler : MonoBehaviour
             if(currentPlayer.CompareTag("Player"))
             {
                 state = State.WaitingForPlayer;
-                AbilityLayout.SetActive(true);
+                AbilityLayout.GetComponent<UpdateAbilityUI>().makeActive();
                 AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer);
                 CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
                 PlayerTurn();
             }
             else
             {
-                AbilityLayout.SetActive(false);
+                AbilityLayout.GetComponent<UpdateAbilityUI>().makeInactive();
                 state = State.Busy;
                 StartCoroutine(EnemyTurn());
             }

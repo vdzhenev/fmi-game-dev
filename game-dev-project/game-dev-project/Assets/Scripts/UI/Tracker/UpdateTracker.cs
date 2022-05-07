@@ -9,13 +9,13 @@ public class UpdateTracker : MonoBehaviour
     private int turnCount;
     [SerializeField]
     private GameObject[] Turns;
-    private List<int> initiativeIDs;
+    private List<List<Sprite>> initiativeIcons;
     private int iniLen;
 
     private void Awake() 
     {
         turnCount = -1;
-        initiativeIDs = new List<int>();
+        initiativeIcons = new List<List<Sprite>>();
     }
 
     public void Setup(List<Transform> ini, int len)
@@ -23,17 +23,17 @@ public class UpdateTracker : MonoBehaviour
         iniLen = len;
         for (int i = 0; i<iniLen; ++i)
         {
-            int currID = ini[i].GetComponent<CharacterStat>().ID;
-            initiativeIDs.Add(currID);
+            initiativeIcons.Add(ini[i].GetComponent<CharacterStat>().Icons);
         }
     }
 
     public void UpdateUI()
     {
         ++turnCount;
-        for(int i = 0; i<5; ++i)
+        Turns[0].GetComponent<Image>().sprite = initiativeIcons[turnCount%iniLen][0];
+        for(int i = 1; i<5; ++i)
         {
-            Turns[i].GetComponent<Image>().sprite = Turns[i].GetComponent<SpriteHandler>().Icons[initiativeIDs[(i+turnCount)%iniLen]];
+            Turns[i].GetComponent<Image>().sprite = initiativeIcons[(turnCount+i)%iniLen][1];
         }
 
     }

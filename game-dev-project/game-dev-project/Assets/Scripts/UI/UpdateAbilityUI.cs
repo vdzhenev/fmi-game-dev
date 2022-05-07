@@ -27,4 +27,20 @@ public class UpdateAbilityUI : MonoBehaviour
         CS.useAbility(n, TARGET);
     }
 
+    public void makeInactive()
+    {
+        for(int i = 0; i<4; ++i)
+        {
+            buttons[i].interactable = false;
+        }
+    }
+
+    public void makeActive()
+    {
+        for(int i = 0; i<4; ++i)
+        {
+            buttons[i].interactable = true;
+        }
+    }
+
 }
