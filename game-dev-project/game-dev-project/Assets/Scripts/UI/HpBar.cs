@@ -10,6 +10,7 @@ public class HpBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Slider slider;
     public TextMeshProUGUI text;
 
+    //Shows exact HP when mouse enters the bar
     public void OnPointerEnter(PointerEventData eventData)
     {
         text.gameObject.SetActive(true);

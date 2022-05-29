@@ -11,6 +11,7 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private GameObject TrackerUI;
     [SerializeField] private GameObject CharacterStatDisplay;
     
+    //enum of the different states of the game - either player turn, CPU turn or end battle state
     private enum State 
     {
         WaitingForPlayer,
@@ -19,19 +20,26 @@ public class BattleHandler : MonoBehaviour
         LOST
     }
 
+    //Team sizes on both the enemy and the player side
     private const int MAX_PLAYER_TEAM_SIZE = 4;
     private const int MAX_ENEMY_TEAM_SIZE = 6;
     private const int TOTAL_SIZE = MAX_PLAYER_TEAM_SIZE + MAX_ENEMY_TEAM_SIZE;
 
+    //List that keeps track of the Initiative - order at which characters take turns
     private List<Transform> initiativeCount;
+
+    //Lists that keep track of characters on the player team and on the enemy team
     private List<Transform> playerTeam;
     private List<Transform> enemyTeam;
 
+    //Current turn number and character
     private int currTurn = -1;
     private Transform currentPlayer;
+    //Selected character - changed by using MouseButton1
     private Transform selected;
     private Camera mainCam;
 
+    //State of the game
     private State state;
 
     // Start is called before the first frame update
@@ -51,28 +59,35 @@ public class BattleHandler : MonoBehaviour
         ClickTarget();
     }
 
+    //Checks for mouse input and casts a ray from mouse position to world position
     bool ClickTarget()
     {
         if(Input.GetMouseButton(0))
         {
+            //Checks if ray hit a "clickable"
             RaycastHit2D hit = Physics2D.Raycast(mainCam.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,Mathf.Infinity, LayerMask.GetMask("Clickable"));
             if(hit.collider != null)
             {
+                //Deselects previous selected entity
                 if(selected) selected.GetComponent<SpriteRenderer>().color = Color.white;
 
+                //Selects the new one and changes its tint to a slightly darker one
                 selected = hit.transform;
                 selected.GetComponent<SpriteRenderer>().color = Color.gray;
+                //Display the stats of the selected entity
                 CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(selected);
                 return true;
             }
             else
             {
+                //If the click didn't result in a valid selection it displays the stats of the current player
                 CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
             }
         }
         return false;
     }
 
+    //Run at the start of battle - sets up the battlefield and instantiates the characters from their prefabs
     IEnumerator SetupBattle()
     {
         for(int i = 0; i < MAX_PLAYER_TEAM_SIZE; ++i)
@@ -84,10 +99,12 @@ public class BattleHandler : MonoBehaviour
             SpawnCharacter(false, i);
         }
 
+        //Sorts the Initiative list in descending order
         initiativeCount.Sort(SortByInitiative);
-
+        //Updates the tracker UI
         TrackerUI.GetComponent<UpdateTracker>().Setup(initiativeCount, TOTAL_SIZE);
 
+        //Decides who the next character should be and waits for 2 seconds
         ChooseNextCharacter();
 
         yield return new WaitForSeconds(2f);
@@ -102,11 +119,13 @@ public class BattleHandler : MonoBehaviour
         {
             if(place <MAX_PLAYER_TEAM_SIZE)
             {
+                //Position is dependant on the index of the character, placing them in order from top left to bottom right
                 position = new Vector3(-2+(place%2),(place<2?1:-1), -1);
                 Transform curr = Instantiate(pfPlayerCharacters[place], position, Quaternion.identity);
                 curr.name = pfPlayerCharacters[place].name;
+                //Initial setup for each character
                 curr.GetComponent<CharacterStat>().startBattle();
-                curr.GetComponent<CharacterStat>().ID = place;
+                //Adds character to initative tracker and player team tracker
                 initiativeCount.Add(curr);
                 playerTeam.Add(curr);
             }
@@ -117,59 +136,72 @@ public class BattleHandler : MonoBehaviour
             Transform curr = Instantiate(pfEnemyCharacters[place], position, Quaternion.identity);
             curr.name = "Enemy" + place;
             curr.GetComponent<CharacterStat>().startBattle();
-            curr.GetComponent<CharacterStat>().ID = MAX_PLAYER_TEAM_SIZE + place;
             initiativeCount.Add(curr);
             enemyTeam.Add(curr);
         }
 
     }
 
+    //Sample enemy turn
     IEnumerator EnemyTurn()
     {
+        CharacterStat cs = currentPlayer.GetComponent<CharacterStat>();
         if(state==State.Busy)
         {     
             yield return new WaitForSeconds(2f);
-            int targetNum = Random.Range(0, MAX_PLAYER_TEAM_SIZE-1);
-            Transform target = playerTeam[targetNum];
-            while(target.GetComponent<CharacterStat>().isDead() && !checkBattleLost())
+            //Enemy needs to have available actions
+            if(cs.numOfActions > 0)
             {
-                Debug.Log(target.name + " is dead. Choosing next...");
-                ++targetNum;
-                target = playerTeam[targetNum%MAX_PLAYER_TEAM_SIZE];
-                Debug.Log(targetNum);
+                //Chooses a random (living) character on the player team and attacks them
+                int targetNum = Random.Range(0, MAX_PLAYER_TEAM_SIZE-1);
+                Transform target = playerTeam[targetNum];
+                while(target.GetComponent<CharacterStat>().isDead() && !checkBattleLost())
+                {
+                    Debug.Log(target.name + " is dead. Choosing next...");
+                    ++targetNum;
+                    target = playerTeam[targetNum%MAX_PLAYER_TEAM_SIZE];
+                    Debug.Log(targetNum);
+                }
+                cs.useAbility(0, target);
             }
-            currentPlayer.GetComponent<CharacterStat>().useAbility(0, target);
 
             //yield return new WaitForSeconds(1f);
             ChooseNextCharacter();
         }
     }
 
+    //Player turn method
     void PlayerTurn()
     {
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
+        //If the player is dead or has no available actions, the turn ends
         if(CS.isDead() || CS.numOfActions <= 0)
         {
             state = State.Busy;
             CS.refreshActions();
             ChooseNextCharacter();
+            return;
         }
-
     }
 
+    //Method called on ability button click
     public void OnAbility(int N)
     {
         if(state != State.WaitingForPlayer)
             return;
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
+        //Abilities can have limited uses each battle
         if(CS.abilities[N].getUses()==0)
             return;
+        //Uses the ability based on what its allowed target can be
         Ability.Target allowed = CS.abilities[N].getTarget();
         switch(allowed)
         {
+            //Self = current player
             case Ability.Target.Self:
                 CS.useAbility(N, currentPlayer);
                 break;
+            //SingleEnemy = selected character must be on enemy team
             case Ability.Target.SingleEnemy:
                 if(enemyTeam.Contains(selected))
                 {
@@ -181,6 +213,7 @@ public class BattleHandler : MonoBehaviour
                     return;
                 }
                 break;
+            //EnemyBack = each character in the back column of the enemy team
             case Ability.Target.EnemyBack:
                 List<Transform> backCol = new List<Transform>();
                 for(int i = 1; i<MAX_ENEMY_TEAM_SIZE; i+=2)
@@ -189,6 +222,7 @@ public class BattleHandler : MonoBehaviour
                 }
                 CS.useAbility(N, backCol);
                 break;
+            //EnemyFront = each character in the front column of the enemy team
             case Ability.Target.EnemyFront:
                 List<Transform> frontCol = new List<Transform>();
                 for(int i = 0; i<MAX_ENEMY_TEAM_SIZE; i+=2)
@@ -197,6 +231,7 @@ public class BattleHandler : MonoBehaviour
                 }
                 CS.useAbility(N, frontCol);
                 break;
+            //SingleEnemy = selected character must be on player team
             case Ability.Target.SingleAlly:
                 if(playerTeam.Contains(selected))
                 {
@@ -208,6 +243,7 @@ public class BattleHandler : MonoBehaviour
                     return;
                 }
                 break;
+            //AllAllies = each character on the player team
             case Ability.Target.AllAllies:
                 CS.useAbility(N, playerTeam);
                 break;
@@ -216,17 +252,14 @@ public class BattleHandler : MonoBehaviour
                 break;
         }
         
-        //Debug.Log("Used ab " + N);
+        //After using an ability, the player may still have actions left, so we go back to check that by calling the function again
         PlayerTurn();
     }
 
-    //IEnumerator waitForTarget()
-    //{
-    //    yield return new WaitUntil(ClickTarget);
-    //}
-
+    //Function to choose the next character from the Initiative
     private void ChooseNextCharacter()
     {
+        //If the battle is won or lost, the game ends
         if(checkBattleLost())
         {
             state = State.LOST;
@@ -239,31 +272,38 @@ public class BattleHandler : MonoBehaviour
         }
         else
         {
+            //Update turn count and tracker UI
             ++currTurn;
             currentPlayer = initiativeCount[currTurn%TOTAL_SIZE];
             TrackerUI.GetComponent<UpdateTracker>().UpdateUI();
-            //Debug.Log(currentPlayer.name + "\'s turn");
+
+            //Skip dead characters
             if(currentPlayer.GetComponent<CharacterStat>().isDead())
             {
                 ChooseNextCharacter();
             }
+            //Current character is on player team
             if(currentPlayer.CompareTag("Player"))
             {
                 state = State.WaitingForPlayer;
                 AbilityLayout.GetComponent<UpdateAbilityUI>().makeActive();
                 AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer);
                 CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
+                currentPlayer.GetComponent<CharacterStat>().tickBuffs();
                 PlayerTurn();
             }
+            //Current character is not on player team
             else
             {
                 AbilityLayout.GetComponent<UpdateAbilityUI>().makeInactive();
                 state = State.Busy;
+                currentPlayer.GetComponent<CharacterStat>().tickBuffs();
                 StartCoroutine(EnemyTurn());
             }
         }
     }
 
+    //Battle is lost when each character on the player team is dead
     private bool checkBattleLost()
     {
         for(int i = 0; i< MAX_PLAYER_TEAM_SIZE; ++i)
@@ -276,6 +316,7 @@ public class BattleHandler : MonoBehaviour
         return true;
     }
 
+    //Battle is won when each character on the enemy team is dead
     private bool checkBattleWon()
     {
         for(int i = 0; i< MAX_ENEMY_TEAM_SIZE; ++i)
@@ -288,6 +329,7 @@ public class BattleHandler : MonoBehaviour
         return true;
     }
 
+    //Placeholder functions for winning and losing the battle
     private void loseBattle()
     {
         Debug.Log("You lost the battle :(");
@@ -298,7 +340,9 @@ public class BattleHandler : MonoBehaviour
         Debug.Log("You won the battle :)");
     }
 
-
+    //Method that compares two characters, based on their initiative roll
+    //Used for sorting initiativeCount in descending order
+    //In case of equal initative rolls, the character with a higher DEX stat gets to go first
     static int SortByInitiative(Transform c1, Transform c2)
     {
         CharacterStat c1CS = c1.GetComponent<CharacterStat>();

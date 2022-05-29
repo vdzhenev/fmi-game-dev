@@ -17,7 +17,7 @@ public class Fjord : CharacterStat
         abilities[0].setDescription($"Deals <color=#B4323D>{10+str}</color> damage to a single enemy");
 
         abilities[1].setAction(Hex);
-        abilities[1].setValue(1);
+        abilities[1].setValue(wis/2);
         abilities[1].setTarget(Ability.Target.SingleEnemy);
         abilities[1].setDescription($"Next attack against the target will deal more damage.\nTarget is weaker for 1 turn.");
 
@@ -40,21 +40,37 @@ public class Fjord : CharacterStat
     private void Falchion(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        if(Random.Range(1,100)<=acc)
+        {
+            if(Random.Range(1,100)<=crit)
+            {
+                val*=2;
+            }
+            CS.takeDamage(val);
+        }
+        else
+        {
+            //miss
+        }
     }
 
     private void Hex(Transform target, int val)
     {
-        
+        HexBuff hex = ScriptableObject.CreateInstance<HexBuff>();
+        hex.Init(1, target, val);
+        target.GetComponent<CharacterStat>().addBuff(hex);
     }
 
     private void ArmorOfAgathys(Transform target, int val)
     {
-        
+        AoABuff armor = ScriptableObject.CreateInstance<AoABuff>();
+        armor.Init(1, target, val);
+        target.GetComponent<CharacterStat>().addBuff(armor);
     }
 
     private void HungerOfHadar(Transform target, int val)
     {
-        
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        CS.takeDamage(val);
     }
 }

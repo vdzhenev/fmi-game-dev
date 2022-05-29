@@ -25,6 +25,8 @@ public class StatDisplay : MonoBehaviour
                             + $"HP: {CS.currHP} / {CS.maxHP}\n"
                             + $"STR: <color=#B4323D>{CS.STR.GetValue()}</color>\n"
                             + $"DEX: <color=#0C9C19>{CS.DEX.GetValue()}</color>\n"
-                            + $"WIS: <color=#6DA9DF>{CS.WIS.GetValue()}</color>");
+                            + $"WIS: <color=#6DA9DF>{CS.WIS.GetValue()}</color>\n"
+                            + $"ACC: {(CS.acc > 100 ? 100 : CS.acc)}\n"
+                            + $"CRT: {(CS.crit > 100 ? 100 : CS.crit)}");
     }
 }

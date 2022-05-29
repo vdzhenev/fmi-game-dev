@@ -30,6 +30,7 @@ public class UpdateTracker : MonoBehaviour
     public void UpdateUI()
     {
         ++turnCount;
+        //First icon on the tracker is the big one
         Turns[0].GetComponent<Image>().sprite = initiativeIcons[turnCount%iniLen][0];
         for(int i = 1; i<5; ++i)
         {

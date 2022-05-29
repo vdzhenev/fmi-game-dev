@@ -39,13 +39,25 @@ public class Nott : CharacterStat
     private void Crossbow(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        if(Random.Range(1,100)<=acc)
+        {
+            if(Random.Range(1,100)<=crit)
+            {
+                val*=2;
+            }
+            CS.takeDamage(val);
+        }
+        else
+        {
+            //miss
+        }
     }
 
     private void SteadyAim(Transform target, int val)
     {
-        CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        SteadyAimBuff aim = ScriptableObject.CreateInstance<SteadyAimBuff>();
+        aim.Init(1, target);
+        target.GetComponent<CharacterStat>().addBuff(aim);
     }
 
     private void Hide(Transform target, int val)

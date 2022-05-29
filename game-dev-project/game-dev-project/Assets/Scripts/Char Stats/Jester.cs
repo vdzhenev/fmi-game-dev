@@ -52,7 +52,18 @@ public class Jester : CharacterStat
     private void SpiritualWeapon(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        if(Random.Range(1,100)<=acc)
+        {
+            if(Random.Range(1,100)<=crit)
+            {
+                val*=2;
+            }
+            CS.takeDamage(val);
+        }
+        else
+        {
+            //miss
+        }
     }
 
     private void SpiritGuardians(Transform target, int val)

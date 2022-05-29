@@ -41,6 +41,7 @@ public class TooltipScreenspace : MonoBehaviour
     {
         SetText(getTooltipTextFunc());
 
+        //Moves rect depending on mouse position, pushes it down and left when at the top or at the right side of the screen
         Vector2 anchoredPosition = Input.mousePosition / canvasRectTransfrom.localScale.x;
         if(anchoredPosition.x + backgroundRectTransform.rect.width > canvasRectTransfrom.rect.width )
         {

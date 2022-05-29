@@ -40,7 +40,18 @@ public class Caleb : CharacterStat
     private void Firebolt(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        if(Random.Range(1,100)<=acc)
+        {
+            if(Random.Range(1,100)<=crit)
+            {
+                val*=2;
+            }
+            CS.takeDamage(val);
+        }
+        else
+        {
+            //miss
+        }
     }
 
     private void WallOfFire(Transform target, int val)
@@ -51,11 +62,15 @@ public class Caleb : CharacterStat
 
     private void Slow(Transform target, int val)
     {
-
+        SlowBuff slow = ScriptableObject.CreateInstance<SlowBuff>();
+        slow.Init(1, target, val);
+        target.GetComponent<CharacterStat>().addBuff(slow);
     }
 
     private void Haste(Transform target, int val)
     {
-
+        HasteBuff haste = ScriptableObject.CreateInstance<HasteBuff>();
+        haste.Init(val, target);
+        target.GetComponent<CharacterStat>().addBuff(haste);
     }
 }

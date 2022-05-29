@@ -7,9 +7,20 @@ public class Stat
 {
     [SerializeField]
     private int BaseValue;
+    private int CurrVal;
 
     public int GetValue()
     {
-        return BaseValue;
+        return CurrVal;
+    }
+
+    public void setValue(int val) 
+    {
+        CurrVal = val;
+    }
+
+    public void setToBase()
+    {
+        CurrVal = BaseValue;
     }
 }
