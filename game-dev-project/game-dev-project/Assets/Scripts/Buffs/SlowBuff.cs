@@ -23,11 +23,11 @@ public class SlowBuff : Buff
 
     protected override void ApplyEffect()
     {
-        cs.acc -= val;
+        cs.ACC.setValue(cs.ACC.GetValue() - val);
     }
 
     public override void End()
     {
-        cs.acc += val;
+        cs.ACC.setValue(cs.ACC.GetValue() + val);
     }
 }

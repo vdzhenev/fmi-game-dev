@@ -251,7 +251,7 @@ public class BattleHandler : MonoBehaviour
                 Debug.Log("Error while choosing target!");
                 break;
         }
-        
+        CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
         //After using an ability, the player may still have actions left, so we go back to check that by calling the function again
         PlayerTurn();
     }
@@ -281,6 +281,7 @@ public class BattleHandler : MonoBehaviour
             if(currentPlayer.GetComponent<CharacterStat>().isDead())
             {
                 ChooseNextCharacter();
+                return;
             }
             //Current character is on player team
             if(currentPlayer.CompareTag("Player"))

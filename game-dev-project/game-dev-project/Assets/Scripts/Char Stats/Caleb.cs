@@ -16,7 +16,7 @@ public class Caleb : CharacterStat
 
 
         abilities[1].setAction(WallOfFire);
-        abilities[1].setValue(5+(wis));
+        abilities[1].setValue(5+(wis/2));
         abilities[1].setTarget(Ability.Target.EnemyFront);
         abilities[1].setDescription($"Deals <color=#6DA9DF>{5+wis/2}</color> damage to all enemies in the front column");
 
@@ -39,18 +39,21 @@ public class Caleb : CharacterStat
 
     private void Firebolt(Transform target, int val)
     {
+        bool crt = false;
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        if(Random.Range(1,100)<=acc)
+        if(Random.Range(1,100)<=ACC.GetValue())
         {
-            if(Random.Range(1,100)<=crit)
+            if(Random.Range(1,100)<=CRT.GetValue())
             {
                 val*=2;
+                crt = true;
             }
             CS.takeDamage(val);
+            DamagePopup.Create(target.position, val, crt);
         }
         else
         {
-            //miss
+            DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
         }
     }
 
@@ -58,6 +61,7 @@ public class Caleb : CharacterStat
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
         CS.takeDamage(val);
+        DamagePopup.Create(target.position, val, false);
     }
 
     private void Slow(Transform target, int val)

@@ -28,10 +28,9 @@ public class CharacterStat : MonoBehaviour
     public Stat AC, STR, DEX, WIS;
     [SerializeField] public List<Ability> abilities;
 
-    //Crit (Critical chance) - % chance at which an attack deals double damage
-    //Acc (Accuracy) - % chance to hit with an attack
-    public int crit = 5;
-    public int acc = 100;
+    //CRT (Critical chance) - % chance at which an attack deals double damage
+    //ACC (Accuracy) - % chance to hit with an attack
+    public Stat CRT, ACC;
 
     //List of buffs / debuffs that affect the character
     public List<Buff> buffs;
@@ -51,6 +50,8 @@ public class CharacterStat : MonoBehaviour
         STR.setToBase();
         DEX.setToBase();
         WIS.setToBase();
+        CRT.setToBase();
+        ACC.setToBase();
         currHP = maxHP;
         buffs = new List<Buff>();
         refreshActions();

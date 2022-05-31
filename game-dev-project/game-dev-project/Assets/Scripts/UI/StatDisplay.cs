@@ -26,7 +26,7 @@ public class StatDisplay : MonoBehaviour
                             + $"STR: <color=#B4323D>{CS.STR.GetValue()}</color>\n"
                             + $"DEX: <color=#0C9C19>{CS.DEX.GetValue()}</color>\n"
                             + $"WIS: <color=#6DA9DF>{CS.WIS.GetValue()}</color>\n"
-                            + $"ACC: {(CS.acc > 100 ? 100 : CS.acc)}\n"
-                            + $"CRT: {(CS.crit > 100 ? 100 : CS.crit)}");
+                            + $"ACC: {(CS.ACC.GetValue() > 100 ? 100 : CS.ACC.GetValue())}\n"
+                            + $"CRT: {(CS.CRT.GetValue() > 100 ? 100 : CS.CRT.GetValue())}");
     }
 }

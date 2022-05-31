@@ -41,28 +41,33 @@ public class Jester : CharacterStat
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
         CS.heal(val);
+        DamagePopup.Create(target.position, $"<color=#26FF00>{val}</color>");
     }
 
     private void PrayerOfHealing(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
         CS.heal(val);
+        DamagePopup.Create(target.position, $"<color=#26FF00>{val}</color>");
     }
 
     private void SpiritualWeapon(Transform target, int val)
     {
+        bool crt = false;
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        if(Random.Range(1,100)<=acc)
+        if(Random.Range(1,100)<=ACC.GetValue())
         {
-            if(Random.Range(1,100)<=crit)
+            if(Random.Range(1,100)<=CRT.GetValue())
             {
                 val*=2;
+                crt = true;
             }
             CS.takeDamage(val);
+            DamagePopup.Create(target.position, val, crt);
         }
         else
         {
-            //miss
+            DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
         }
     }
 

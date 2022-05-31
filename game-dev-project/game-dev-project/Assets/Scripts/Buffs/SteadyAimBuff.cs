@@ -20,11 +20,11 @@ public class SteadyAimBuff : Buff
 
     protected override void ApplyEffect()
     {
-        cs.crit += 100;
+        cs.CRT.setValue(cs.CRT.GetValue() + 100);
     }
 
     public override void End()
     {
-        cs.crit -= 100;
+        cs.CRT.setValue(cs.CRT.GetValue() - 100);
     }
 }

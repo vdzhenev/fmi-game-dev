@@ -11,9 +11,23 @@ public class SampleEnemy : CharacterStat
         abilities[0].setValue(10+STR.GetValue());
     }
 
-    public void Attack(Transform Target, int val)
+    public void Attack(Transform target, int val)
     {
-        CharacterStat CS = Target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        bool crt = false;
+        CharacterStat CS = target.GetComponent<CharacterStat>();
+        if(Random.Range(1,100)<=ACC.GetValue())
+        {
+            if(Random.Range(1,100)<=CRT.GetValue())
+            {
+                val*=2;
+                crt = true;
+            }
+            CS.takeDamage(val);
+            DamagePopup.Create(target.position, val, crt);
+        }
+        else
+        {
+            DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
+        }
     }
 }
