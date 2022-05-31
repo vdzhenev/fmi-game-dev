@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3657865456133150092}
   - component: {fileID: 3657865456133150130}
   - component: {fileID: 3657865456133150093}
+  - component: {fileID: 5741967622702793799}
   m_Layer: 9
   m_Name: nott
   m_TagString: Player
@@ -161,6 +162,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55d2d6fa30f4274199d7b214513ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5741967622702793799
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657865456133150089}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d5766ace7be0c004eb87d04cada5800c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &5282241495611239480
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -146,9 +146,11 @@ public class BattleHandler : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         CharacterStat cs = currentPlayer.GetComponent<CharacterStat>();
+        Animator animator = currentPlayer.GetComponent<Animator>();
         if(state==State.Busy)
         {     
             yield return new WaitForSeconds(2f);
+            animator.SetTrigger("StartTurn");
             //Enemy needs to have available actions
             if(cs.numOfActions > 0)
             {
@@ -164,6 +166,10 @@ public class BattleHandler : MonoBehaviour
                 }
                 cs.useAbility(0, target);
             }
+            else
+            {
+                animator.SetTrigger("EndTurn");
+            }
 
             //yield return new WaitForSeconds(1f);
             ChooseNextCharacter();
@@ -174,14 +180,17 @@ public class BattleHandler : MonoBehaviour
     void PlayerTurn()
     {
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
+        Animator animator = currentPlayer.GetComponent<Animator>();
         //If the player is dead or has no available actions, the turn ends
         if(CS.isDead() || CS.numOfActions <= 0)
         {
             state = State.Busy;
             CS.refreshActions();
+            animator.SetTrigger("EndTurn");
             ChooseNextCharacter();
             return;
         }
+        animator.SetTrigger("StartTurn");
     }
 
     //Method called on ability button click

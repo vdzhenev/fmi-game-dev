@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4490909599241311330}
   - component: {fileID: 4490909599241311331}
   - component: {fileID: 4490909599241311328}
+  - component: {fileID: 5910824873693115292}
   m_Layer: 9
   m_Name: fjord
   m_TagString: Player
@@ -161,6 +162,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
+--- !u!95 &5910824873693115292
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490909599241311335}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e3a2f49d0802ba42ab34d91b34fb827, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &8653845370470812130
 PrefabInstance:
   m_ObjectHideFlags: 0
