@@ -10,6 +10,10 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private GameObject AbilityLayout;
     [SerializeField] private GameObject TrackerUI;
     [SerializeField] private GameObject CharacterStatDisplay;
+
+    //Positions at which characters are spawned
+    [SerializeField] private Transform[] PlayerPositions;
+    [SerializeField] private Transform[] EnemyPositions;
     
     //enum of the different states of the game - either player turn, CPU turn or end battle state
     private enum State 
@@ -21,9 +25,9 @@ public class BattleHandler : MonoBehaviour
     }
 
     //Team sizes on both the enemy and the player side
-    private const int MAX_PLAYER_TEAM_SIZE = 4;
-    private const int MAX_ENEMY_TEAM_SIZE = 6;
-    private const int TOTAL_SIZE = MAX_PLAYER_TEAM_SIZE + MAX_ENEMY_TEAM_SIZE;
+    private int MAX_PLAYER_TEAM_SIZE;
+    private int MAX_ENEMY_TEAM_SIZE;
+    private int TOTAL_SIZE;
 
     //List that keeps track of the Initiative - order at which characters take turns
     private List<Transform> initiativeCount;
@@ -35,7 +39,7 @@ public class BattleHandler : MonoBehaviour
     //Current turn number and character
     private int currTurn = -1;
     private Transform currentPlayer;
-    //Selected character - changed by using MouseButton1
+    //Selected character - changed by using Left Mouse Button
     private Transform selected;
     private Camera mainCam;
 
@@ -45,6 +49,9 @@ public class BattleHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MAX_PLAYER_TEAM_SIZE = PlayerPositions.Length;
+        MAX_ENEMY_TEAM_SIZE = EnemyPositions.Length;
+        TOTAL_SIZE = MAX_PLAYER_TEAM_SIZE + MAX_ENEMY_TEAM_SIZE;
         selected = null;
         mainCam = Camera.main;
         initiativeCount = new List<Transform>();
@@ -114,14 +121,14 @@ public class BattleHandler : MonoBehaviour
     // Places characters and enemies on the field
     private void SpawnCharacter(bool isOnPlayerTeam, int place)
     {
-        Vector3 position;
+        //Vector3 position;
         if(isOnPlayerTeam)
         {
             if(place <MAX_PLAYER_TEAM_SIZE)
             {
                 //Position is dependant on the index of the character, placing them in order from top left to bottom right
-                position = new Vector3(-2+(place%2),(place<2?1:-1), -1);
-                Transform curr = Instantiate(pfPlayerCharacters[place], position, Quaternion.identity);
+                //position = new Vector3(-2+(place%2),(place<2?1:-1), -1);
+                Transform curr = Instantiate(pfPlayerCharacters[place], PlayerPositions[place].position, Quaternion.identity);
                 curr.name = pfPlayerCharacters[place].name;
                 //Initial setup for each character
                 curr.GetComponent<CharacterStat>().startBattle();
@@ -132,8 +139,8 @@ public class BattleHandler : MonoBehaviour
         }
         else if(place <MAX_ENEMY_TEAM_SIZE)
         {
-            position = new Vector3(1+(place%2), (place < 2 ? 1:(place <4 ? 0 : -1) ), -1);
-            Transform curr = Instantiate(pfEnemyCharacters[place], position, Quaternion.identity);
+            //position = new Vector3(1+(place%2), (place < 2 ? 1:(place <4 ? 0 : -1) ), -1);
+            Transform curr = Instantiate(pfEnemyCharacters[place], EnemyPositions[place].position, Quaternion.identity);
             curr.name = "Enemy" + place;
             curr.GetComponent<CharacterStat>().startBattle();
             initiativeCount.Add(curr);
@@ -201,7 +208,11 @@ public class BattleHandler : MonoBehaviour
         CharacterStat CS = currentPlayer.GetComponent<CharacterStat>();
         //Abilities can have limited uses each battle
         if(CS.abilities[N].getUses()==0)
+        {
+            //TextPopup.Create(currentPlayer.position, "I can't use this right now!");
+            SoundManager.PlaySound(SoundManager.Sound.Error);
             return;
+        }
         //Uses the ability based on what its allowed target can be
         Ability.Target allowed = CS.abilities[N].getTarget();
         switch(allowed)
@@ -219,6 +230,8 @@ public class BattleHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("Incorrect Target.");
+                    //TextPopup.Create(currentPlayer.position, "That is not a valid target!");
+                    SoundManager.PlaySound(SoundManager.Sound.Error);
                     return;
                 }
                 break;
@@ -249,6 +262,8 @@ public class BattleHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("Incorrect Target.");
+                    //TextPopup.Create(currentPlayer.position, "That is not a valid target!");
+                    SoundManager.PlaySound(SoundManager.Sound.Error);
                     return;
                 }
                 break;
@@ -258,6 +273,7 @@ public class BattleHandler : MonoBehaviour
                 break;
             default:
                 Debug.Log("Error while choosing target!");
+                SoundManager.PlaySound(SoundManager.Sound.Error);
                 break;
         }
         CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);

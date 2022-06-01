@@ -54,6 +54,7 @@ public class Fjord : CharacterStat
         else
         {
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
+            SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
     }
 
@@ -76,5 +77,6 @@ public class Fjord : CharacterStat
         CharacterStat CS = target.GetComponent<CharacterStat>();
         CS.takeDamage(val);
         DamagePopup.Create(target.position, val, false);
+        SoundManager.PlaySound(SoundManager.Sound.Hit);
     }
 }

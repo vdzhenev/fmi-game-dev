@@ -68,6 +68,7 @@ public class Jester : CharacterStat
         else
         {
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
+            SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
     }
 

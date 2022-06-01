@@ -43,4 +43,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47b1021900b023479d75d36c352b126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundAudioClipArray:
+  - sound: 0
+    audioClip: {fileID: 8300000, guid: 9c7cc1902560bc244a5ce66a648a190a, type: 3}
+  - sound: 1
+    audioClip: {fileID: 8300000, guid: 0ae2db5bbc7211840a8e4be8643bb9c3, type: 3}
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: 80b6b3ae69731144589df2f1e8841a2a, type: 3}
+  - sound: 3
+    audioClip: {fileID: 8300000, guid: 03cfd16cab105634dbf9b7799811d079, type: 3}
+  - sound: 4
+    audioClip: {fileID: 8300000, guid: 983be0fd2206a8547aaff14d0c5ffa37, type: 3}
   pfDamagePopup: {fileID: 5439737402185389587, guid: 8dc72deda154c554e9b1cd7fb5332822, type: 3}
+  pfTextPopup: {fileID: 5405380402200711115, guid: db9e947d1b5eb304da375a7aa92e2d9c, type: 3}

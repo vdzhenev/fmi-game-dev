@@ -58,3 +58,13 @@ MonoBehaviour:
   AbilityLayout: {fileID: 0}
   TrackerUI: {fileID: 0}
   CharacterStatDisplay: {fileID: 0}
+  PlayerPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  EnemyPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

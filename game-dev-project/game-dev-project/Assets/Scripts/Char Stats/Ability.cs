@@ -120,9 +120,25 @@ public class Ability : ScriptableObject
         if(Uses==0)
         {
             Debug.Log("No more uses left!");
+            SoundManager.PlaySound(SoundManager.Sound.Error);
             return;
         }
         else if(Uses != -1)
+        {
+            --Uses;
+        }
+        onUse(TARGET, Value);
+    }
+
+    public void Use(Transform TARGET, bool decrUses)
+    {
+        if(decrUses && Uses==0)
+        {
+            Debug.Log("No more uses left!");
+            SoundManager.PlaySound(SoundManager.Sound.Error);
+            return;
+        }
+        else if(decrUses && Uses != -1)
         {
             --Uses;
         }
@@ -140,10 +156,13 @@ public class Ability : ScriptableObject
         {
             --Uses;
         }
-        foreach(Transform t in Targets)
-        {
-            onUse(t, Value);
-        }
+        //StartCoroutine(SlowUse(Targets));
+        //foreach(Transform t in Targets)
+        //{
+        //    onUse(t, Value);
+        //}
     }
+
+
 
 }

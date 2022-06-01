@@ -85,14 +85,19 @@ public class CharacterStat : MonoBehaviour
             currHP = 0;
             Die();
         }
+        else
+        {
+            SoundManager.PlaySound(SoundManager.Sound.Hit);
+        }
         hpBar.SetHealth(currHP);
     }
     
     //Placeholder function for character death
     public void Die()
     {
-        Debug.Log("character died");
+        Debug.Log(name + " died");
         GetComponent<SpriteRenderer>().enabled = false;
+        SoundManager.PlaySound(SoundManager.Sound.Death);
     }
 
     //Method used when character is healed
@@ -101,7 +106,6 @@ public class CharacterStat : MonoBehaviour
         //Character must be alive
         if(!isDead())
         {
-            Debug.Log("character healed for " + amount);
             currHP+=amount;
             //Can't get healed above maxHP
             if(currHP>maxHP)
@@ -109,6 +113,7 @@ public class CharacterStat : MonoBehaviour
                 currHP = maxHP;
             }
         }
+        SoundManager.PlaySound(SoundManager.Sound.Heal);
         hpBar.SetHealth(currHP);
     }
 
@@ -162,8 +167,21 @@ public class CharacterStat : MonoBehaviour
     //Method for using a character's ability on multiple targets.
     public void useAbility(int n, List<Transform> TARGET)
     {
-        abilities[n].Use(TARGET);
+        //abilities[n].Use(TARGET);
+        StartCoroutine(SlowUse(n, TARGET));
         takeAction();
+    }
+
+    IEnumerator SlowUse(int n, List<Transform> Targets)
+    {
+        bool decrUses = true;
+        Debug.Log(Targets.Count);
+        foreach(Transform t in Targets)
+        {
+            abilities[n].Use(t, decrUses);
+            yield return new WaitForSeconds(0.2f);
+            decrUses = false;
+        }
     }
 
     //Checks if character is dead
