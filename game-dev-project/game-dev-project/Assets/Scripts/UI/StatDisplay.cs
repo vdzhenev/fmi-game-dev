@@ -21,8 +21,9 @@ public class StatDisplay : MonoBehaviour
     public void updateStatDisplay(Transform Character)
     {
         CharacterStat CS = Character.GetComponent<CharacterStat>();
+        charIcon.sprite = CS.Icons[0];
         textMeshPro.SetText($"<uppercase>{Character.name}</uppercase>\n"
-                            + $"HP: {CS.currHP} / {CS.maxHP}\n"
+                            + $"HP: {CS.currHP} / {CS.maxHP} \tAC: {CS.AC.GetValue()}\n"
                             + $"STR: <color=#B4323D>{CS.STR.GetValue()}</color>\n"
                             + $"DEX: <color=#0C9C19>{CS.DEX.GetValue()}</color>\n"
                             + $"WIS: <color=#6DA9DF>{CS.WIS.GetValue()}</color>\n"

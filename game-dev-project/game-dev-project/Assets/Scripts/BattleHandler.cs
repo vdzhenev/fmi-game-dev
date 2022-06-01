@@ -141,7 +141,7 @@ public class BattleHandler : MonoBehaviour
         {
             //position = new Vector3(1+(place%2), (place < 2 ? 1:(place <4 ? 0 : -1) ), -1);
             Transform curr = Instantiate(pfEnemyCharacters[place], EnemyPositions[place].position, Quaternion.identity);
-            curr.name = "Enemy" + place;
+            curr.name = pfEnemyCharacters[place].name;
             curr.GetComponent<CharacterStat>().startBattle();
             initiativeCount.Add(curr);
             enemyTeam.Add(curr);

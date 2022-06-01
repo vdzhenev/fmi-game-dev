@@ -1681,6 +1681,14 @@ PrefabInstance:
       propertyPath: PlayerPositions.Array.data[3]
       value: 
       objectReference: {fileID: 1652273120}
+    - target: {fileID: 8424167004122204337, guid: 8fe79444947cc3f4bbb691f80592c0b9, type: 3}
+      propertyPath: pfEnemyCharacters.Array.data[0]
+      value: 
+      objectReference: {fileID: 8321369645419292964, guid: 108db5aec11f9f044ab0403679de8c5b, type: 3}
+    - target: {fileID: 8424167004122204337, guid: 8fe79444947cc3f4bbb691f80592c0b9, type: 3}
+      propertyPath: pfEnemyCharacters.Array.data[1]
+      value: 
+      objectReference: {fileID: 8321369645419292964, guid: 108db5aec11f9f044ab0403679de8c5b, type: 3}
     - target: {fileID: 8424167004122204338, guid: 8fe79444947cc3f4bbb691f80592c0b9, type: 3}
       propertyPath: m_RootOrder
       value: 2

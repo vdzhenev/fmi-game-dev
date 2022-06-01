@@ -76,9 +76,11 @@ public class CharacterStat : MonoBehaviour
     public void takeDamage(int damage)
     {
         //Damage gets reduced based on the AC of the character
+        Debug.Log((AC.GetValue()/10f)*damage);
         int finDMG = damage-(Mathf.FloorToInt((AC.GetValue()/10f)*damage));
         currHP -= finDMG;
         Debug.Log(name + " took " + finDMG + " damage\nCurr HP " + currHP);
+        DamagePopup.Create(transform.position, finDMG, false);
         //If character is reduced bellow 0 HP, it dies
         if(currHP<=0)
         {

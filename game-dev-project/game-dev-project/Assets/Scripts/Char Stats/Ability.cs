@@ -80,6 +80,12 @@ public class Ability : ScriptableObject
         return Value;
     }
 
+    public void setUses(int val)
+    {
+        BaseUses = val;
+        refreshUses();
+    }
+
     public int getUses()
     {
         return Uses;
