@@ -22,12 +22,13 @@ public class SampleEnemy : CharacterStat
                 val*=2;
                 crt = true;
             }
-            CS.takeDamage(val);
+            CS.takeDamage(val, crt);
             //DamagePopup.Create(target.position, val, crt);
         }
         else
         {
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
         }
+        tickOnAttackBuffs();
     }
 }

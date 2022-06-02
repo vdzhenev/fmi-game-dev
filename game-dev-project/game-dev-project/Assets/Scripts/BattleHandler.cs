@@ -161,23 +161,25 @@ public class BattleHandler : MonoBehaviour
             //Enemy needs to have available actions
             if(cs.numOfActions > 0)
             {
-                //Chooses a random (living) character on the player team and attacks them
+                int cycles = 0;
+                //Chooses a random (targetable) character on the player team and attacks them
                 int targetNum = Random.Range(0, MAX_PLAYER_TEAM_SIZE-1);
                 Transform target = playerTeam[targetNum];
-                while(target.GetComponent<CharacterStat>().isDead() && !checkBattleLost())
+                while(cycles <MAX_PLAYER_TEAM_SIZE && !target.GetComponent<CharacterStat>().canBeTargeted && !checkBattleLost())
                 {
                     Debug.Log(target.name + " is dead. Choosing next...");
                     ++targetNum;
+                    ++cycles;
                     target = playerTeam[targetNum%MAX_PLAYER_TEAM_SIZE];
                     Debug.Log(targetNum);
                 }
-                cs.useAbility(0, target);
+                if(cycles<MAX_PLAYER_TEAM_SIZE)
+                    cs.useAbility(0, target);
+                else 
+                    Debug.Log("Can't find valid target.");
             }
-            else
-            {
-                animator.SetTrigger("EndTurn");
-            }
-
+            animator.SetTrigger("EndTurn");
+            cs.refreshActions();
             //yield return new WaitForSeconds(1f);
             ChooseNextCharacter();
         }
@@ -223,7 +225,7 @@ public class BattleHandler : MonoBehaviour
                 break;
             //SingleEnemy = selected character must be on enemy team
             case Ability.Target.SingleEnemy:
-                if(enemyTeam.Contains(selected))
+                if(selected.GetComponent<CharacterStat>().canBeTargeted && enemyTeam.Contains(selected))
                 {
                     CS.useAbility(N, selected);
                 }
@@ -315,7 +317,7 @@ public class BattleHandler : MonoBehaviour
                 AbilityLayout.GetComponent<UpdateAbilityUI>().makeActive();
                 AbilityLayout.GetComponent<UpdateAbilityUI>().updateAbilities(currentPlayer);
                 CharacterStatDisplay.GetComponent<StatDisplay>().updateStatDisplay(currentPlayer);
-                currentPlayer.GetComponent<CharacterStat>().tickBuffs();
+                currentPlayer.GetComponent<CharacterStat>().tickTimedBuffs();
                 PlayerTurn();
             }
             //Current character is not on player team
@@ -323,7 +325,7 @@ public class BattleHandler : MonoBehaviour
             {
                 AbilityLayout.GetComponent<UpdateAbilityUI>().makeInactive();
                 state = State.Busy;
-                currentPlayer.GetComponent<CharacterStat>().tickBuffs();
+                currentPlayer.GetComponent<CharacterStat>().tickTimedBuffs();
                 StartCoroutine(EnemyTurn());
             }
         }

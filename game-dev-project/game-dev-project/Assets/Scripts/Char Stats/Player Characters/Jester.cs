@@ -62,7 +62,7 @@ public class Jester : CharacterStat
                 val*=2;
                 crt = true;
             }
-            CS.takeDamage(val);
+            CS.takeDamage(val, crt);
             //DamagePopup.Create(target.position, val, crt);
         }
         else
@@ -70,6 +70,7 @@ public class Jester : CharacterStat
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
             SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
+        tickOnAttackBuffs();
     }
 
     private void SpiritGuardians(Transform target, int val)

@@ -48,7 +48,7 @@ public class Caleb : CharacterStat
                 val*=2;
                 crt = true;
             }
-            CS.takeDamage(val);
+            CS.takeDamage(val, crt);
             //DamagePopup.Create(target.position, val, crt);
         }
         else
@@ -56,12 +56,14 @@ public class Caleb : CharacterStat
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
             SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
+        tickOnAttackBuffs();
     }
 
     private void WallOfFire(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        CS.takeDamage(val, false);
+        tickOnAttackBuffs();
         DamagePopup.Create(target.position, val, false);
         SoundManager.PlaySound(SoundManager.Sound.Hit);
     }
@@ -70,13 +72,13 @@ public class Caleb : CharacterStat
     {
         SlowBuff slow = ScriptableObject.CreateInstance<SlowBuff>();
         slow.Init(1, target, val);
-        target.GetComponent<CharacterStat>().addBuff(slow);
+        target.GetComponent<CharacterStat>().addTimedBuff(slow);
     }
 
     private void Haste(Transform target, int val)
     {
         HasteBuff haste = ScriptableObject.CreateInstance<HasteBuff>();
         haste.Init(val, target);
-        target.GetComponent<CharacterStat>().addBuff(haste);
+        target.GetComponent<CharacterStat>().addTimedBuff(haste);
     }
 }

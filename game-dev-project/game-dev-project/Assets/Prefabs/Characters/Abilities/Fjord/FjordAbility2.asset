@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: -4943777641531120426, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
   abilityName: Armor of Agathys
-  description: Next attack against you will deal less damage. Attacker will take
-    damage.
+  description: 'Next attack against you will deal less damage.
+
+    Attacker will
+    take <color=#6DA9DF>4</color> damage.'
   Value: 4
   BaseUses: -1
+  appliedBuffs:
+  - {fileID: 11400000, guid: 93203c147cd14774898ec2c2870f8ca1, type: 2}

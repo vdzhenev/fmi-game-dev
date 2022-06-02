@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 3904786964428584882, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
   abilityName: Hex
-  description: Next attack against an enemy will deal more damage. Enemy is weaker.
-  Value: 0
+  description: 'Next attack against the target will deal more damage.
+
+    Target
+    is weaker for 1 turn.'
+  Value: 2
   BaseUses: 2
+  appliedBuffs:
+  - {fileID: 11400000, guid: 985ecb0266f70314f81746c553f5c85b, type: 2}
+  - {fileID: 11400000, guid: 66718ef105f5ead4b8b66e324e05d946, type: 2}

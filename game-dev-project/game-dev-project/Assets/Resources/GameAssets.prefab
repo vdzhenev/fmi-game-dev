@@ -56,3 +56,18 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 983be0fd2206a8547aaff14d0c5ffa37, type: 3}
   pfDamagePopup: {fileID: 5439737402185389587, guid: 8dc72deda154c554e9b1cd7fb5332822, type: 3}
   pfTextPopup: {fileID: 5405380402200711115, guid: db9e947d1b5eb304da375a7aa92e2d9c, type: 3}
+  buffIconArray:
+  - type: 0
+    icon: {fileID: -4943777641531120426, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
+  - type: 1
+    icon: {fileID: 4908009426808777585, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
+  - type: 2
+    icon: {fileID: 3904786964428584882, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
+  - type: 3
+    icon: {fileID: 7788712924911839641, guid: 93daf1badd3487647a55b0eb39f39df0, type: 3}
+  - type: 4
+    icon: {fileID: 8146480102938911284, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
+  - type: 5
+    icon: {fileID: -1842167769493143345, guid: 93daf1badd3487647a55b0eb39f39df0, type: 3}
+  - type: 6
+    icon: {fileID: 3904786964428584882, guid: ef81158077f33d740a2a27857e9191e7, type: 3}

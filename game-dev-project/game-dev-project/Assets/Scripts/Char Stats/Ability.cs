@@ -31,12 +31,15 @@ public class Ability : ScriptableObject
     [SerializeField] private int BaseUses = -1;
     private int Uses {set; get;}
 
+    [SerializeField] public List<Buff> appliedBuffs;
+
     private bool special = false;
 
     private Action<Transform, int> onUse;
 
     private void Awake() 
     {
+        appliedBuffs = new List<Buff>();
         Uses = BaseUses;
     }
 
@@ -100,6 +103,11 @@ public class Ability : ScriptableObject
     {
         return image;
     }
+
+    //public Buff getAppliedBuff(int n)
+    //{
+    //    return appliedBuffs[n];
+    //}
 
     public Ability(string n, int val, int u, bool s, string desc, Action<Transform, int> _onUse)
     {

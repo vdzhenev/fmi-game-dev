@@ -48,7 +48,7 @@ public class Fjord : CharacterStat
                 val*=2;
                 crt = true;
             }
-            CS.takeDamage(val);
+            CS.takeDamage(val, crt);
             //DamagePopup.Create(target.position, val, crt);
         }
         else
@@ -56,26 +56,32 @@ public class Fjord : CharacterStat
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
             SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
+        tickOnAttackBuffs();
     }
 
     private void Hex(Transform target, int val)
     {
         HexBuff hex = ScriptableObject.CreateInstance<HexBuff>();
         hex.Init(1, target, val);
-        target.GetComponent<CharacterStat>().addBuff(hex);
+        WeakenBuff weaken = ScriptableObject.CreateInstance<WeakenBuff>();
+        weaken.Init(1, target, val);
+
+        target.GetComponent<CharacterStat>().addOnTakeDamageBuff(hex);
+        target.GetComponent<CharacterStat>().addTimedBuff(weaken);
     }
 
     private void ArmorOfAgathys(Transform target, int val)
     {
         AoABuff armor = ScriptableObject.CreateInstance<AoABuff>();
         armor.Init(1, target, val);
-        target.GetComponent<CharacterStat>().addBuff(armor);
+        target.GetComponent<CharacterStat>().addOnTakeDamageBuff(armor);
     }
 
     private void HungerOfHadar(Transform target, int val)
     {
+        tickOnAttackBuffs();
         CharacterStat CS = target.GetComponent<CharacterStat>();
-        CS.takeDamage(val);
+        CS.takeDamage(val, false);
         //DamagePopup.Create(target.position, val, false);
         SoundManager.PlaySound(SoundManager.Sound.Hit);
     }

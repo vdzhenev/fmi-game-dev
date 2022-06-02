@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Nott : CharacterStat
 {
-        protected override void Awake() 
+    protected override void Awake() 
     {
         base.Awake();
 
@@ -16,12 +16,12 @@ public class Nott : CharacterStat
         abilities[0].setDescription($"Deals <color=#0C9C19>{10+dex*2}</color> damage to a single enemy.");
 
         abilities[1].setAction(SteadyAim);
-        abilities[1].setValue(0);
+        abilities[1].setValue(1);
         abilities[1].setTarget(Ability.Target.Self);
         abilities[1].setDescription($"Your next attack will deal double damage!");
 
         abilities[2].setAction(Hide);
-        abilities[2].setValue(0);
+        abilities[2].setValue(1);
         abilities[2].setTarget(Ability.Target.Self);
         abilities[2].setDescription($"Enemies can\'t target you until your next turn.");
 
@@ -32,7 +32,7 @@ public class Nott : CharacterStat
 
         //abilities.Add(new Ability("Crossbow",           10+(DEX.GetValue()*2),  -1,     true,  "Deals damage to a single enemy",                    Crossbow));
         //abilities.Add(new Ability("Steady Aim",         0,                       2,     false,  "Next attack will deal double damage!",             SteadyAim));
-        //abilities.Add(new Ability("Hide",               0,                      -1,     false,  "Enemies can\'t target you until your next turn",   Hide));
+        //abilities.Add(new Ability("Hide",               1,                      -1,     false,  "Enemies can\'t target you until your next turn",   Hide));
         //abilities.Add(new Ability("Hideous Laughter",   1,                       2,     false,  "Enemy will have one less action next turn.",       Laughter));
     }
 
@@ -40,6 +40,7 @@ public class Nott : CharacterStat
     {
         bool crt = false;
         CharacterStat CS = target.GetComponent<CharacterStat>();
+        
         if(Random.Range(1,100)<=ACC.GetValue())
         {
             if(Random.Range(1,100)<=CRT.GetValue())
@@ -47,7 +48,7 @@ public class Nott : CharacterStat
                 val*=2;
                 crt = true;
             }
-            CS.takeDamage(val);
+            CS.takeDamage(val, crt);
             //DamagePopup.Create(target.position, val, crt);
         }
         else
@@ -55,24 +56,28 @@ public class Nott : CharacterStat
             DamagePopup.Create(target.position, $"<color=#42BFB7>MISS!</color>");
             SoundManager.PlaySound(SoundManager.Sound.Miss);
         }
+        tickOnAttackBuffs();
     }
 
     private void SteadyAim(Transform target, int val)
     {
         SteadyAimBuff aim = ScriptableObject.CreateInstance<SteadyAimBuff>();
-        aim.Init(1, target);
-        aim.Activate();
-        //target.GetComponent<CharacterStat>().addBuff(aim);
+        aim.Init(val, target);
+        target.GetComponent<CharacterStat>().addOnAttackBuff(aim);
     }
 
     private void Hide(Transform target, int val)
     {
-        
+        HideBuff hide = ScriptableObject.CreateInstance<HideBuff>();
+        hide.Init(val, target);
+        hide.Activate();
+        target.GetComponent<CharacterStat>().addOnAttackBuff(hide);
     }
 
     private void Laughter(Transform target, int val)
     {
         CharacterStat CS = target.GetComponent<CharacterStat>();
+        tickOnAttackBuffs();
         CS.takeAction();
     }
 }

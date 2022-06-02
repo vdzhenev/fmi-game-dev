@@ -9,8 +9,8 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
-        TooltipScreenspace.ShowTooltip_Static(a.getAbilityText);
+        if(a != null)
+            TooltipScreenspace.ShowTooltip_Static(a.getAbilityText);
     }
 
     public void OnPointerExit(PointerEventData eventData)

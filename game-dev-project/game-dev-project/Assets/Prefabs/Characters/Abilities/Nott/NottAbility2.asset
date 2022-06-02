@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 7788712924911839641, guid: 93daf1badd3487647a55b0eb39f39df0, type: 3}
   abilityName: Hide
-  description: Enemies can't target you until your next turn
-  Value: 0
+  description: Enemies can't target you until your next turn.
+  Value: 1
   BaseUses: -1
+  appliedBuffs:
+  - {fileID: 11400000, guid: c4f614ad9c2cffe4c9d9b75839ac8074, type: 2}

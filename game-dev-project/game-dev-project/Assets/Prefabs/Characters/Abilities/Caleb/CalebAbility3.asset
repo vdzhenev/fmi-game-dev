@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 4908009426808777585, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
   abilityName: Haste
-  description: Ally can take two actions on it's next turn.
+  description: Ally can take an extra action on it's next turn
   Value: 1
   BaseUses: -1
+  appliedBuffs:
+  - {fileID: 11400000, guid: bc25565fa7e27ac46a6ef19e39532620, type: 2}

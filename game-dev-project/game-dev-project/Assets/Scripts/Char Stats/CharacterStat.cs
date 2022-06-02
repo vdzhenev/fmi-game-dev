@@ -7,7 +7,7 @@ using UnityEngine.UI;
 //Base class used for character stats
 public class CharacterStat : MonoBehaviour
 {
-    //public int ID = -1;
+    public bool canBeTargeted;
 
     //Health Points
     public int maxHP = 10;
@@ -32,13 +32,16 @@ public class CharacterStat : MonoBehaviour
     //ACC (Accuracy) - % chance to hit with an attack
     public Stat CRT, ACC;
 
-    //List of buffs / debuffs that affect the character
-    public List<Buff> buffs;
+    //Lists of buffs / debuffs that affect the character
+    private List<Buff> timedBuffs;          //Timed buffs "tick" at the start of the character's turn
+    public List<Buff> onAttackBuffs;       //onAttack buffs tick whenever the character attacks
+    private List<Buff> onTakeDamageBuffs;   //onTakeDamage buffs tick whenever the character takes damage
 
     //Icons used in the initiative tracker; First Icon is the Big one, second is the small one
     public List<Sprite> Icons;
 
     public HpBar hpBar;
+    public BuffBar buffBar;
 
     
     public Transform myTarget {get; set;}
@@ -46,6 +49,7 @@ public class CharacterStat : MonoBehaviour
     protected virtual void Awake() 
     {
         //Set stats to their base values
+        canBeTargeted = true;
         AC.setToBase();
         STR.setToBase();
         DEX.setToBase();
@@ -53,7 +57,9 @@ public class CharacterStat : MonoBehaviour
         CRT.setToBase();
         ACC.setToBase();
         currHP = maxHP;
-        buffs = new List<Buff>();
+        timedBuffs = new List<Buff>();
+        onAttackBuffs = new List<Buff>();
+        onTakeDamageBuffs = new List<Buff>();
         refreshActions();
         foreach(Ability a in abilities)
         {
@@ -73,14 +79,16 @@ public class CharacterStat : MonoBehaviour
     }
 
     //Method used when character takes damage. Takes the value as a parameter
-    public void takeDamage(int damage)
+    public void takeDamage(int damage, bool crt)
     {
         //Damage gets reduced based on the AC of the character
-        Debug.Log((AC.GetValue()/10f)*damage);
         int finDMG = damage-(Mathf.FloorToInt((AC.GetValue()/10f)*damage));
+
+
         currHP -= finDMG;
         Debug.Log(name + " took " + finDMG + " damage\nCurr HP " + currHP);
-        DamagePopup.Create(transform.position, finDMG, false);
+        DamagePopup.Create(transform.position, finDMG, crt);
+        tickOnTakeDamageBuffs();
         //If character is reduced bellow 0 HP, it dies
         if(currHP<=0)
         {
@@ -99,6 +107,8 @@ public class CharacterStat : MonoBehaviour
     {
         Debug.Log(name + " died");
         GetComponent<SpriteRenderer>().enabled = false;
+        canBeTargeted = false;
+        removeAllBuffs();
         SoundManager.PlaySound(SoundManager.Sound.Death);
     }
 
@@ -193,23 +203,93 @@ public class CharacterStat : MonoBehaviour
     }
 
     //Adds a buff to the list of buffs
-    public void addBuff(Buff buff)
+    public void addTimedBuff(Buff buff)
     {
-        buffs.Add(buff);
+        timedBuffs.Add(buff);
+        buff.Activate();
+        buffBar.AddBuff(buff);
         //Debug.Log("Added buff");
     } 
 
-    //"Ticks" each timed buff in the list (buff applies its effects and gets its duration reduced)
-    public void tickBuffs()
+    public void addOnAttackBuff(Buff buff)
     {
-        foreach(Buff b in buffs.ToArray())
+        onAttackBuffs.Add(buff);
+        buff.Activate();
+        buffBar.AddBuff(buff);
+        //Debug.Log("Added buff");
+    }
+
+    public void addOnTakeDamageBuff(Buff buff)
+    {
+        onTakeDamageBuffs.Add(buff);
+        buff.Activate();
+        buffBar.AddBuff(buff);
+    }
+
+    //"Ticks" each timed buff in the list (buff applies its effects and gets its duration reduced)
+    public void tickTimedBuffs()
+    {
+        foreach(Buff b in timedBuffs.ToArray())
         {
             //Debug.Log("tick");
             b.Tick();
             if(b.isFinished)
             {
-                buffs.Remove(b);
+                timedBuffs.Remove(b);
+                buffBar.RemoveBuff(b.type);
             }
+        }
+    }
+
+    public void tickOnTakeDamageBuffs()
+    {
+        foreach(Buff b in onTakeDamageBuffs.ToArray())
+        {
+            //Debug.Log("tick");
+            b.Tick();
+            if(b.isFinished)
+            {
+                onTakeDamageBuffs.Remove(b);
+                buffBar.RemoveBuff(b.type);
+            }
+        }
+    }
+
+    public void tickOnAttackBuffs()
+    {
+        foreach(Buff b in onAttackBuffs.ToArray())
+        {
+            //Debug.Log("tick");
+            b.Tick();
+            if(b.isFinished)
+            {
+                onAttackBuffs.Remove(b);
+                buffBar.RemoveBuff(b.type);
+            }
+        }
+    }
+
+    private void removeAllBuffs()
+    {
+        foreach(Buff b in timedBuffs.ToArray())
+        {
+            b.isFinished = true;    
+            timedBuffs.Remove(b);
+            buffBar.RemoveBuff(b.type);
+        }
+
+        foreach(Buff b in onAttackBuffs.ToArray())
+        {
+            b.isFinished = true;    
+            onAttackBuffs.Remove(b);
+            buffBar.RemoveBuff(b.type);
+        }
+
+        foreach(Buff b in onTakeDamageBuffs.ToArray())
+        {
+            b.isFinished = true;    
+            onTakeDamageBuffs.Remove(b);
+            buffBar.RemoveBuff(b.type);
         }
     }
 }

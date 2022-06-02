@@ -26,4 +26,12 @@ public class GameAssets : MonoBehaviour
 
     public Transform pfDamagePopup;
     public Transform pfTextPopup;
+
+    [System.Serializable]
+    public class BuffIcon
+    {
+        public BuffBar.BuffType type;
+        public Sprite icon;
+    }
+    public BuffIcon[] buffIconArray;
 }

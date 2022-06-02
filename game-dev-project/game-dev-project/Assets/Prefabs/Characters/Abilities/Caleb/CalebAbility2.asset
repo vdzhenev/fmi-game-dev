@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 8146480102938911284, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
   abilityName: Slow
-  description: Slows down an enemy making them more likely to miss.
+  description: Slows down an enemy making them more likely to miss their next attack.
   Value: 7
   BaseUses: -1
+  appliedBuffs:
+  - {fileID: 11400000, guid: aaf5a9d99ed9f124ca52fee772c64db0, type: 2}

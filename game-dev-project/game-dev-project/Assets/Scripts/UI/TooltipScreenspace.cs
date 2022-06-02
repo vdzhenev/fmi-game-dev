@@ -39,7 +39,8 @@ public class TooltipScreenspace : MonoBehaviour
 
     private void Update() 
     {
-        SetText(getTooltipTextFunc());
+        if(getTooltipTextFunc != null)
+            SetText(getTooltipTextFunc());
 
         //Moves rect depending on mouse position, pushes it down and left when at the top or at the right side of the screen
         Vector2 anchoredPosition = Input.mousePosition / canvasRectTransfrom.localScale.x;
@@ -57,8 +58,10 @@ public class TooltipScreenspace : MonoBehaviour
 
     private void ShowTooltip(string tooltipText)
     {
+        this.getTooltipTextFunc = null;
         gameObject.SetActive(true);
         SetText(tooltipText);
+ 
     }
 
     private void ShowTooltip(System.Func<string> getTooltipTextFunc)

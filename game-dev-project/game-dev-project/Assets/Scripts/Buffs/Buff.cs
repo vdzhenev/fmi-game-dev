@@ -9,14 +9,28 @@ public abstract class Buff : ScriptableObject
     //Buff has duration, object which gets affected, and a boolen which tells when the duration is over
     public int Duration;
     private Transform Obj;
+    private bool isStackable;
     public bool isFinished = false;
+    public BuffBar.BuffType type;
+    public string BuffDescription;
 
-    [SerializeField] private Sprite image;
+    [SerializeField] private Sprite Icon;
 
-    public Buff(int dur, Transform obj)
+    public Buff(int dur, Transform obj, bool stack)
     {
         Duration = dur;
         Obj = obj;
+        isStackable = stack;
+    }
+
+    public Buff(Buff b) 
+    {
+        this.Duration = b.Duration;
+        this.Obj = b.Obj;
+        this.isStackable = b.isStackable;
+        this.isFinished = b.isFinished;
+        this.type = b.type;
+        this.BuffDescription = b.BuffDescription;
     }
 
     public void setDuration(int dur)
@@ -29,11 +43,32 @@ public abstract class Buff : ScriptableObject
         Obj = obj;
     }
 
+    public void setStackable(bool stack)
+    {
+        isStackable = stack;
+    }
+
+    public void setType(BuffBar.BuffType _type)
+    {
+        type = _type;
+    }
+
+    public Sprite getIcon()
+    {
+        return Icon;
+    }
+
+    public string getDescription()
+    {
+        return BuffDescription;
+    }
+
     //Tick buff - effects get applied and duration is reduced
     public void Tick()
     {
         --Duration;
-        ApplyEffect();
+        if(isStackable)
+            ApplyEffect();
         if(Duration <= 0)
         {
             End();
