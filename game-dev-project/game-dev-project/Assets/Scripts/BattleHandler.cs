@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleHandler : MonoBehaviour
 {
@@ -211,6 +212,7 @@ public class BattleHandler : MonoBehaviour
         //Abilities can have limited uses each battle
         if(CS.abilities[N].getUses()==0)
         {
+            CS.Speak("I can't use that right now.");
             //TextPopup.Create(currentPlayer.position, "I can't use this right now!");
             SoundManager.PlaySound(SoundManager.Sound.Error);
             return;
@@ -232,7 +234,7 @@ public class BattleHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("Incorrect Target.");
-                    //TextPopup.Create(currentPlayer.position, "That is not a valid target!");
+                    CS.Speak("That is not a valid target!");
                     SoundManager.PlaySound(SoundManager.Sound.Error);
                     return;
                 }
@@ -264,6 +266,7 @@ public class BattleHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("Incorrect Target.");
+                    CS.Speak("That is not a valid target!");
                     //TextPopup.Create(currentPlayer.position, "That is not a valid target!");
                     SoundManager.PlaySound(SoundManager.Sound.Error);
                     return;
@@ -361,11 +364,13 @@ public class BattleHandler : MonoBehaviour
     private void loseBattle()
     {
         Debug.Log("You lost the battle :(");
+        GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().LoadMenu();
     }
     
     private void winBattle()
     {
         Debug.Log("You won the battle :)");
+        //GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().LoadMap();
     }
 
     //Method that compares two characters, based on their initiative roll

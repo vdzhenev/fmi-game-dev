@@ -34,4 +34,12 @@ public class GameAssets : MonoBehaviour
         public Sprite icon;
     }
     public BuffIcon[] buffIconArray;
+
+    [System.Serializable]
+    public class RoomIcon 
+    {
+        public Node.Type type;
+        public Sprite icon;
+    }
+    public RoomIcon[] roomIconArray;
 }

@@ -18,6 +18,8 @@ public class Ability : ScriptableObject
     }
 
     [SerializeField] private Sprite image;
+    [SerializeField] private Transform VFX;
+    private bool beginsFromCharacter = false;
 
     [SerializeField]
     private string abilityName = "sample name";
@@ -104,6 +106,11 @@ public class Ability : ScriptableObject
         return image;
     }
 
+    public void setStart(bool start)
+    {
+        beginsFromCharacter = start;
+    }
+
     //public Buff getAppliedBuff(int n)
     //{
     //    return appliedBuffs[n];
@@ -175,6 +182,26 @@ public class Ability : ScriptableObject
         //{
         //    onUse(t, Value);
         //}
+    }
+
+    public void PlayAnimation(Vector3 posFrom, Vector3 posTo)
+    {
+        if(VFX != null)
+        {
+            if(beginsFromCharacter)
+            {
+                float rotation = Vector3.Angle(Vector3.right, posTo - posFrom);
+                if (posFrom.x > posTo.x)
+                    rotation += 180;
+                Debug.Log("Moving towards " + posTo + "rotation " + rotation);
+                Transform effect = Instantiate(VFX, posFrom, Quaternion.Euler(0, 0, rotation));
+                effect.GetComponent<MoveToDest>().to = posTo;
+            }
+            else
+            {   
+                Transform effect = Instantiate(VFX, posTo, Quaternion.identity);
+            }
+        }
     }
 
 

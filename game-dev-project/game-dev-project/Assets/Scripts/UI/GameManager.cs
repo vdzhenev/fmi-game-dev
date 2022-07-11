@@ -1,20 +1,30 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
     public SceneAsset mainScene;
-    public SceneAsset gameScene;
+    public SceneAsset mapScene;
+    public SceneAsset roomScene;
     //public SceneAsset optionsScene;
 
     public void LoadMenu()
     {
         SceneManager.LoadScene(mainScene.name);
+        GameObject.Find("MapCanvas").SetActive(false);
     }
 
-    public void LoadGame()
+    public void LoadMap()
     {
-        SceneManager.LoadScene(gameScene.name);
+        SceneManager.LoadScene(mapScene.name);
+        GameObject.Find("MapCanvas").SetActive(true);
+    }
+
+    public void LoadRoom()
+    {
+        SceneManager.LoadScene(roomScene.name);
+        GameObject.Find("MapCanvas").SetActive(false);
     }
 
     //public void LoadOptionsMenu()

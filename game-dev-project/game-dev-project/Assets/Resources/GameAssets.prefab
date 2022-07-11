@@ -58,16 +58,29 @@ MonoBehaviour:
   pfTextPopup: {fileID: 5405380402200711115, guid: db9e947d1b5eb304da375a7aa92e2d9c, type: 3}
   buffIconArray:
   - type: 0
-    icon: {fileID: -4943777641531120426, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
+    icon: {fileID: 827499980680385693, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 1
-    icon: {fileID: 4908009426808777585, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
+    icon: {fileID: 8311614553859292676, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 2
-    icon: {fileID: 3904786964428584882, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
+    icon: {fileID: 3184470865432342940, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 3
-    icon: {fileID: 7788712924911839641, guid: 93daf1badd3487647a55b0eb39f39df0, type: 3}
+    icon: {fileID: 7089278558077111498, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 4
-    icon: {fileID: 8146480102938911284, guid: 76273eada8137c441b24681fabbf5df2, type: 3}
+    icon: {fileID: -6593461880254954900, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 5
-    icon: {fileID: -1842167769493143345, guid: 93daf1badd3487647a55b0eb39f39df0, type: 3}
+    icon: {fileID: 4958014468125680394, guid: 837978cbac1f17e49a594d068536001c, type: 3}
   - type: 6
-    icon: {fileID: 3904786964428584882, guid: ef81158077f33d740a2a27857e9191e7, type: 3}
+    icon: {fileID: -7034374578912603976, guid: 837978cbac1f17e49a594d068536001c, type: 3}
+  roomIconArray:
+  - type: 0
+    icon: {fileID: 21300000, guid: dc38f9e3e78ffa6458eef35b91734c01, type: 3}
+  - type: 1
+    icon: {fileID: 21300000, guid: a659b3db6c6283c4ab4097bde1ed83da, type: 3}
+  - type: 2
+    icon: {fileID: 21300000, guid: 3947bcc8d258fd346ba7b5d76513d303, type: 3}
+  - type: 3
+    icon: {fileID: 21300000, guid: ee5a6435e77119c408bfc4829177a84f, type: 3}
+  - type: 4
+    icon: {fileID: 21300000, guid: 4dc48a470f5d96e40aa0623afdb61124, type: 3}
+  - type: 5
+    icon: {fileID: 21300000, guid: 8f98eccc912162f409781fe4a63632f7, type: 3}

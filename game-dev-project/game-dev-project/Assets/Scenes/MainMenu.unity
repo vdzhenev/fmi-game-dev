@@ -339,7 +339,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 171843107}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7505223879617442405}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: LoadMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &171843107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,7 +855,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1943753814}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7505223879617442405}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ExitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1943753814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -957,6 +981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7505223879563764026, guid: c642d888c01b1d7408e190678314b1d7, type: 3}
+      propertyPath: gameScene
+      value: 
+      objectReference: {fileID: 102900000, guid: 52b99c2b6ab33d94fb85b290709fd282, type: 3}
     - target: {fileID: 7505223879563764027, guid: c642d888c01b1d7408e190678314b1d7, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1003,3 +1031,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c642d888c01b1d7408e190678314b1d7, type: 3}
+--- !u!114 &7505223879617442405 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7505223879563764026, guid: c642d888c01b1d7408e190678314b1d7, type: 3}
+  m_PrefabInstance: {fileID: 7505223879617442404}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6242ac533b913054a8b60d4edda71906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -13,7 +13,7 @@ public class Caleb : CharacterStat
         abilities[0].setValue(10+(wis*2));
         abilities[0].setTarget(Ability.Target.SingleEnemy);
         abilities[0].setDescription($"Deals <color=#6DA9DF>{10+wis*2}</color> damage to a single enemy");
-
+        abilities[0].setStart(true);
 
         abilities[1].setAction(WallOfFire);
         abilities[1].setValue(5+(wis/2));

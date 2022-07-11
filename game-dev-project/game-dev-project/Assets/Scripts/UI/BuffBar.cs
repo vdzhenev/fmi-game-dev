@@ -53,7 +53,6 @@ public class BuffBar : MonoBehaviour
     {
         foreach(GameAssets.BuffIcon buffIcon in GameAssets.i.buffIconArray)
         {
-            Debug.Log(buffIcon.type);
             if(buffIcon.type == type)
             {
                 return buffIcon.icon;

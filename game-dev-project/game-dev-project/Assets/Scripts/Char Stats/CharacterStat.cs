@@ -42,6 +42,7 @@ public class CharacterStat : MonoBehaviour
 
     public HpBar hpBar;
     public BuffBar buffBar;
+    public TextPopup textPopup;
 
     
     public Transform myTarget {get; set;}
@@ -173,6 +174,7 @@ public class CharacterStat : MonoBehaviour
     public void useAbility(int n, Transform TARGET)
     {
         abilities[n].Use(TARGET);
+        abilities[n].PlayAnimation(transform.position, TARGET.position);
         takeAction();
     }
 
@@ -191,6 +193,7 @@ public class CharacterStat : MonoBehaviour
         foreach(Transform t in Targets)
         {
             abilities[n].Use(t, decrUses);
+            abilities[n].PlayAnimation(transform.position, t.position);
             yield return new WaitForSeconds(0.2f);
             decrUses = false;
         }
@@ -291,5 +294,10 @@ public class CharacterStat : MonoBehaviour
             onTakeDamageBuffs.Remove(b);
             buffBar.RemoveBuff(b.type);
         }
+    }
+
+    public void Speak(string text) 
+    {
+        textPopup.Setup(text);
     }
 }

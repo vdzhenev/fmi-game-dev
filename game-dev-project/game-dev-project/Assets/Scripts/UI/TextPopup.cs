@@ -7,10 +7,13 @@ public class TextPopup : MonoBehaviour
 {
     TextMeshPro text;
     private float timer = 2f;
+    private bool show;
     // Start is called before the first frame update
     void Awake()
     {
+        show = false;
         text = transform.Find("Text").GetComponent<TextMeshPro>();
+        gameObject.SetActive(false);
     }
 
     public static TextPopup Create(Vector3 position, string text)
@@ -25,15 +28,28 @@ public class TextPopup : MonoBehaviour
 
     public void Setup(string txt) 
     {
-        text.SetText(txt);
+        //if(!gameObject.activeSelf)
+        {
+            
+            gameObject.SetActive(true);
+            Debug.Log(gameObject.activeSelf);
+            text.SetText(txt);
+            StartCoroutine(HideAfter2Seconds());
+        }
     }
 
-    private void Update() 
+    //private void Update() 
+    //{
+    //    timer -= Time.deltaTime;
+    //    if(!show || timer <= 0)
+    //    {
+    //        //Destroy(gameObject);
+    //    }
+    //}
+
+    IEnumerator HideAfter2Seconds()
     {
-        timer -= Time.deltaTime;
-        if(timer <= 0)
-        {
-            Destroy(gameObject);
-        }
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
     }
 }

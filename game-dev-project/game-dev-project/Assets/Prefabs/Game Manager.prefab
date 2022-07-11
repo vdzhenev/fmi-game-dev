@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7505223879563764026}
   m_Layer: 0
   m_Name: Game Manager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainScene: {fileID: 102900000, guid: 3b7c9f722dc0867459d650b9b8eb7e80, type: 3}
-  gameScene: {fileID: 0}
+  mapScene: {fileID: 102900000, guid: 52b99c2b6ab33d94fb85b290709fd282, type: 3}
+  roomScene: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
