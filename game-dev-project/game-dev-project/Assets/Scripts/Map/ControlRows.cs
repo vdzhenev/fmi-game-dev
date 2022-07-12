@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControlRows : MonoBehaviour
 {
@@ -33,13 +34,13 @@ public class ControlRows : MonoBehaviour
                 case int r when r <10:
                     t = Node.Type.Shop;
                     break;
-                case int r when r <20:
+                case int r when r <25:
                     t = Node.Type.Mystery;
                     break;
                 case int r when r <40:
                     t = Node.Type.Rest;
                     break;
-                case int r when r <90:
+                case int r when r <95:
                     t = Node.Type.Battle;
                     break;
                 case int r when r <100:
@@ -48,6 +49,7 @@ public class ControlRows : MonoBehaviour
                 default:
                     break;
             }
+            //Debug.Log("Setting type " + t + " Random num " + rand);
             n.GetComponent<Node>().setType(t);
         }
     }

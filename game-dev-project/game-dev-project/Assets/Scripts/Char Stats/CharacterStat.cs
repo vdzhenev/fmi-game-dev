@@ -62,10 +62,7 @@ public class CharacterStat : MonoBehaviour
         onAttackBuffs = new List<Buff>();
         onTakeDamageBuffs = new List<Buff>();
         refreshActions();
-        foreach(Ability a in abilities)
-        {
-            a.refreshUses();
-        }
+        refreshAbilityUses();
         hpBar.SetMaxHealth(maxHP);
     }
 
@@ -148,6 +145,7 @@ public class CharacterStat : MonoBehaviour
     public void startBattle()
     {
         refreshActions();
+        refreshAbilityUses();
         rollInitiative();
     }
     
@@ -155,6 +153,14 @@ public class CharacterStat : MonoBehaviour
     public void refreshActions()
     {
         numOfActions = baseNumOfActions;
+    }
+
+    public void refreshAbilityUses()
+    {
+        foreach(Ability a in abilities)
+        {
+            a.refreshUses();
+        }
     }
 
     //Taking an action reduces number of available actions by 1

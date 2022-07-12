@@ -16,6 +16,7 @@ public class ControlColumns : MonoBehaviour
     {
         if(index < MAX_COLS)
         {
+            ++index;
             for(int i = 0; i<MAX_COLS; ++i) 
             {
                 ControlRows rows = transform.GetChild(i).GetComponent<ControlRows>();
@@ -24,7 +25,7 @@ public class ControlColumns : MonoBehaviour
                 else
                     rows.setStates(Node.State.Locked);
             }
-            ++index;
+            Debug.Log("Opening column " + index);
         }
         else
             Debug.Log("Reached end of map");
@@ -33,14 +34,19 @@ public class ControlColumns : MonoBehaviour
     private void GenerateRooms()
     {
         int max = MAX_COLS-2;
-        for(int i = 0; i<max; ++i) 
+        ControlRows CR_0 = transform.GetChild(0).GetComponent<ControlRows>();
+        CR_0.SetRoomsType(Node.Type.Battle);
+        CR_0.setStates(Node.State.Reachable);
+        for(int i = 1; i<max; ++i) 
         {
-            Debug.Log(transform.GetChild(i).name);
             ControlRows rows = transform.GetChild(i).GetComponent<ControlRows>();
             rows.SetRandomType();
+            rows.setStates(Node.State.Locked);
         }
         transform.GetChild(max).GetComponent<ControlRows>().SetRoomsType(Node.Type.Rest);
+        transform.GetChild(max).GetComponent<ControlRows>().setStates(Node.State.Locked);
         transform.GetChild(max+1).GetComponent<ControlRows>().SetRoomsType(Node.Type.Elite);
+        transform.GetChild(max+1).GetComponent<ControlRows>().setStates(Node.State.Locked);
     }
 
 }

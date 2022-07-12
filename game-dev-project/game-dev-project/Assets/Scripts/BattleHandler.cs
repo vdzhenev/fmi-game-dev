@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class BattleHandler : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private GameObject AbilityLayout;
     [SerializeField] private GameObject TrackerUI;
     [SerializeField] private GameObject CharacterStatDisplay;
+    [SerializeField] private Canvas BattleOverCanvas;
+    private static GameManager gameManager;
 
     //Positions at which characters are spawned
     [SerializeField] private Transform[] PlayerPositions;
@@ -55,6 +58,11 @@ public class BattleHandler : MonoBehaviour
         TOTAL_SIZE = MAX_PLAYER_TEAM_SIZE + MAX_ENEMY_TEAM_SIZE;
         selected = null;
         mainCam = Camera.main;
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
+        BattleOverCanvas.GetComponent<BattleOver>().Hide();
         initiativeCount = new List<Transform>();
         playerTeam = new List<Transform>();
         enemyTeam = new List<Transform>();
@@ -98,9 +106,22 @@ public class BattleHandler : MonoBehaviour
     //Run at the start of battle - sets up the battlefield and instantiates the characters from their prefabs
     IEnumerator SetupBattle()
     {
-        for(int i = 0; i < MAX_PLAYER_TEAM_SIZE; ++i)
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        if(players.Length == 0) 
         {
-            SpawnCharacter(true, i);
+            for(int i = 0; i < MAX_PLAYER_TEAM_SIZE; ++i)
+            {
+                SpawnCharacter(true, i);
+            }
+        }
+        else
+        {
+            foreach(GameObject p in players) 
+            {
+                p.transform.GetComponent<CharacterStat>().startBattle();
+                initiativeCount.Add(p.transform);
+                playerTeam.Add(p.transform);
+            }
         }
         for(int i = 0; i < MAX_ENEMY_TEAM_SIZE; ++i)
         {
@@ -364,13 +385,13 @@ public class BattleHandler : MonoBehaviour
     private void loseBattle()
     {
         Debug.Log("You lost the battle :(");
-        GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().LoadMenu();
+        BattleOverCanvas.GetComponent<BattleOver>().Show(false);
     }
     
     private void winBattle()
     {
         Debug.Log("You won the battle :)");
-        //GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().LoadMap();
+        BattleOverCanvas.GetComponent<BattleOver>().Show(true);
     }
 
     //Method that compares two characters, based on their initiative roll

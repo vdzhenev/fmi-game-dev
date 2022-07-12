@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class GenerateMap : MonoBehaviour
 {
-    [SerializeField] private List<Transform> nodes;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Canvas MapManager;
 
-    // Update is called once per frame
-    void Update()
+    private static GenerateMap instance;
+
+    void Awake()
     {
-        
+        if (instance == null) 
+        {
+            instance = this;
+            Canvas map = Instantiate(MapManager, Vector3.zero, Quaternion.identity);
+            map.name = MapManager.name;
+        } 
+        else 
+        {
+            DestroyObject(gameObject);
+        }
     }
 }

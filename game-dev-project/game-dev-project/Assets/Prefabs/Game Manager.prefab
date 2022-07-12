@@ -45,4 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainScene: {fileID: 102900000, guid: 3b7c9f722dc0867459d650b9b8eb7e80, type: 3}
   mapScene: {fileID: 102900000, guid: 52b99c2b6ab33d94fb85b290709fd282, type: 3}
-  roomScene: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
+  battleScene: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
+  shopScene: {fileID: 102900000, guid: f6c968a43e37007438100ad74afc6528, type: 3}
+  eventScene: {fileID: 102900000, guid: 107461fe403805347abe54aae81beddf, type: 3}
+  restScene: {fileID: 102900000, guid: c6d4c6198e355154389edc6bd7336fc6, type: 3}

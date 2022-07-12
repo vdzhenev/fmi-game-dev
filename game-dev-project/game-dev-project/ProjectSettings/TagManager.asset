@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Canvas
   - Manager
+  - Map Manager
+  - BattleOver
+  - MapCanvas
   layers:
   - Default
   - TransparentFX

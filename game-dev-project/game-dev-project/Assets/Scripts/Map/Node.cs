@@ -25,21 +25,26 @@ public class Node : MonoBehaviour
     private State state = State.Locked;
     private Type type = Type.Empty;
 
-    // Start is called before the first frame update
+    private static GameManager gameManager;
+    private static GameObject mapManager;
+ 
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
+        if (mapManager == null)
+        {
+            mapManager = GameObject.FindGameObjectWithTag("Map Manager");
+        }
     }
 
     public void OnClick()
     {
-
+        setState(State.Visited);
+        mapManager.GetComponent<ControlColumns>().goNext();
+        gameManager.LoadRoom(type);
     }
 
     public void setState(State s) 
@@ -47,7 +52,7 @@ public class Node : MonoBehaviour
         if(state != State.Visited)
         {    
             state = s;
-            SpriteRenderer sr = transform.GetComponent<SpriteRenderer>();
+            Image sr = transform.GetComponent<Image>();
             Button b = transform.GetComponent<Button>();
             switch (s)
             {
@@ -56,11 +61,11 @@ public class Node : MonoBehaviour
                     b.interactable = false;
                     break;
                 case State.Visited:
-                    sr.color = Color.black;
+                    sr.color = Color.cyan;
                     b.interactable = false;
                     break;
                 case State.Reachable:
-                    sr.color = Color.black;
+                    sr.color = Color.white;
                     b.interactable = true;
                     break;
                 default:
@@ -71,8 +76,21 @@ public class Node : MonoBehaviour
 
     public void setType(Type t)
     {
-        type = t;
         gameObject.GetComponent<Image>().sprite = getRoomIcon(t);
+        if(t == Type.Mystery)
+        {
+            int rng = Random.Range(0,100);
+            if(rng < 25)
+                type = Type.Shop;
+            else if(rng < 50)
+                type = Type.Rest;
+            else if(rng < 75)
+                type = Type.Battle;
+            else
+                type = t;
+        }
+        else
+            type = t;          
     }
 
     private static Sprite getRoomIcon(Type type)
