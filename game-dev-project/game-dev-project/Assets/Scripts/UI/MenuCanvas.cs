@@ -6,6 +6,8 @@ public class MenuCanvas : MonoBehaviour
 {
     private void Awake() 
     {
+        //If the Map Canvas exists (meaning the player has already started a run)
+        //The menu contains a continue button, which allows the player to continue their run
         if(GameObject.Find("MapCanvas") != null)
             GameObject.Find("MenuCanvas").GetComponent<MenuCanvas>().showContButton(true);
         else

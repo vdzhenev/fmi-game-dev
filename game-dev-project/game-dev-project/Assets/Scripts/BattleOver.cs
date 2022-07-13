@@ -17,6 +17,8 @@ public class BattleOver : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
     }
 
+    //Shows the canvas
+    //Depending on the outcome of the battle, the canvas shows or hides the continue button
     public void Show(bool won)
     {
         canvas.enabled = true;
@@ -30,6 +32,7 @@ public class BattleOver : MonoBehaviour
         }
     }
 
+    //Hides the canvas
     public void Hide()
     {
         canvas.enabled = false; 

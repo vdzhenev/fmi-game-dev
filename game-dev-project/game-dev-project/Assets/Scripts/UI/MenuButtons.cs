@@ -7,6 +7,7 @@ public class MenuButtons : MonoBehaviour
 {
     [SerializeField] GameObject ContButton;
 
+    //Shows or hides the continue button
     public void ShowHideContButton(bool show)
     {
         ContButton.SetActive(show);
