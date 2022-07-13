@@ -6,6 +6,8 @@ using TMPro;
 
 public class BattleHandler : MonoBehaviour
 {
+    private static BattleHandler instance;
+
     //Prefabs for Player Characters and Enemies
     [SerializeField] private Transform[] pfPlayerCharacters;
     [SerializeField] private Transform[] pfEnemyCharacters;
@@ -13,7 +15,6 @@ public class BattleHandler : MonoBehaviour
     [SerializeField] private GameObject TrackerUI;
     [SerializeField] private GameObject CharacterStatDisplay;
     [SerializeField] private Canvas BattleOverCanvas;
-    private static GameManager gameManager;
 
     //Positions at which characters are spawned
     [SerializeField] private Transform[] PlayerPositions;
@@ -37,7 +38,7 @@ public class BattleHandler : MonoBehaviour
     private List<Transform> initiativeCount;
 
     //Lists that keep track of characters on the player team and on the enemy team
-    private List<Transform> playerTeam;
+    private static List<Transform> playerTeam;
     private List<Transform> enemyTeam;
 
     //Current turn number and character
@@ -53,15 +54,19 @@ public class BattleHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         MAX_PLAYER_TEAM_SIZE = PlayerPositions.Length;
         MAX_ENEMY_TEAM_SIZE = EnemyPositions.Length;
         TOTAL_SIZE = MAX_PLAYER_TEAM_SIZE + MAX_ENEMY_TEAM_SIZE;
         selected = null;
         mainCam = Camera.main;
-        if (gameManager == null)
-        {
-            gameManager = FindObjectOfType<GameManager>();
-        }
         BattleOverCanvas.GetComponent<BattleOver>().Hide();
         initiativeCount = new List<Transform>();
         playerTeam = new List<Transform>();

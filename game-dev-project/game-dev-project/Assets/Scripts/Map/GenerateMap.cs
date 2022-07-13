@@ -18,7 +18,7 @@ public class GenerateMap : MonoBehaviour
         } 
         else 
         {
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
     }
 }

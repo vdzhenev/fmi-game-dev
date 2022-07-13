@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3657865456133150130}
   - component: {fileID: 3657865456133150093}
   - component: {fileID: 5741967622702793799}
+  - component: {fileID: 8413677801149168584}
   m_Layer: 9
   m_Name: nott
   m_TagString: Player
@@ -190,6 +191,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8413677801149168584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657865456133150089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3971010e4b96f4baaa411cd581129c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1462264070592731880
 PrefabInstance:
   m_ObjectHideFlags: 0

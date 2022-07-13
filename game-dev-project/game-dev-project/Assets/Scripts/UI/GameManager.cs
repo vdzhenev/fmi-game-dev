@@ -29,28 +29,40 @@ public class GameManager : MonoBehaviour
     public void LoadRoom(Node.Type type)
     {
         ShowHideMap(false);
-        ShowHidePlayers(true);
         switch (type)
         {
             case Node.Type.Battle:
                 SceneManager.LoadScene(battleScene.name);
+                ShowHidePlayers(true);
                 break;
             case Node.Type.Elite:
                 break;
             case Node.Type.Mystery:
                 SceneManager.LoadScene(eventScene.name);
+                ShowHidePlayers(false);
                 break;
             case Node.Type.Rest:
                 SceneManager.LoadScene(restScene.name);
+                ShowHidePlayers(false);
                 break;
             case Node.Type.Shop:
                 SceneManager.LoadScene(shopScene.name);
+                ShowHidePlayers(false);
                 break;
             default:
                 Debug.Log("Couldn't identify room type!");
                 break;
         }
         //Debug.Log(type);
+    }
+
+    public void NewRun()
+    {
+        GameObject map = GameObject.Find("Map");
+        GameObject mapCanvas = GameObject.Find("MapCanvas");
+        Destroy(map);
+        Destroy(mapCanvas);
+        SceneManager.LoadScene(mapScene.name);
     }
 
     public void ExitGame()
@@ -63,7 +75,7 @@ public class GameManager : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject p in players)
         {
-            p.SetActive(show);
+            p.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, (show?-1:-100));
         }
     }
 

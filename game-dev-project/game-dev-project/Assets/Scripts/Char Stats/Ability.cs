@@ -193,7 +193,6 @@ public class Ability : ScriptableObject
                 float rotation = Vector3.Angle(Vector3.right, posTo - posFrom);
                 if (posFrom.x > posTo.x)
                     rotation += 180;
-                Debug.Log("Moving towards " + posTo + "rotation " + rotation);
                 Transform effect = Instantiate(VFX, posFrom, Quaternion.Euler(0, 0, rotation));
                 effect.GetComponent<MoveToDest>().to = posTo;
             }
